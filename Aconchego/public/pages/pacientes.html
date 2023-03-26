@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lista de Pacientes</title>
+    <link rel="stylesheet" href="/styles/painel.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="header">
+                ACONCHEGO
+            </div>
+            <div class="paginas">
+                <ul class="paginas-alinhadas">
+                    <li>
+                        <form action="http://localhost:8080/menu" method="get" id="form_painel">
+                            <a href="javascript:{}" onclick="document.getElementById('form_painel').submit();">
+                                <img src="\images\home.png">    Painel
+                            </a>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="http://localhost:8080/agendamento" method="get" id="form_agendamento">
+                            <a href="javascript:{}" onclick="document.getElementById('form_agendamento').submit();">
+                                <img src="\images\agenda.png">    Agendamento
+                            </a>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="http://localhost:8080/pacientes" method="get" id="form_pacientes">
+                            <a href="javascript:{}" onclick="document.getElementById('form_pacientes').submit();">
+                                <img src="\images\paciente.png">    Pacientes
+                            </a>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="http://localhost:8080/logout" method="get" id="form_sair">
+                            <a href="javascript:{}" onclick="document.getElementById('form_sair').submit();">    Sair</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <h1>Lista de Pacientes</h1>
+        <div style="display: flex; flex-wrap: wrap;">
+            <!-- Primeira Fila -->
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-1.html"><img src="imagem-do-paciente-1.jpg" alt="Paciente 1"></a>
+            </div>
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-2.html"><img src="imagem-do-paciente-2.jpg" alt="Paciente 2"></a>
+            </div>
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-3.html"><img src="imagem-do-paciente-3.jpg" alt="Paciente 3"></a>
+            </div>
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-4.html"><img src="imagem-do-paciente-4.jpg" alt="Paciente 4"></a>
+            </div>
+            <!-- Segunda Fila -->
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-5.html"><img src="imagem-do-paciente-5.jpg" alt="Paciente 5"></a>
+            </div>
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-6.html"><img src="imagem-do-paciente-6.jpg" alt="Paciente 6"></a>
+            </div>
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-7.html"><img src="imagem-do-paciente-7.jpg" alt="Paciente 7"></a>
+            </div>
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-8.html"><img src="imagem-do-paciente-8.jpg" alt="Paciente 8"></a>
+            </div>
+            <!-- Terceira Fila -->
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-9.html"><img src="imagem-do-paciente-9.jpg" alt="Paciente 9"></a>
+            </div>
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-10.html"><img src="imagem-do-paciente-10.jpg" alt="Paciente 10"></a>
+            </div>
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-11.html"><img src="imagem-do-paciente-11.jpg" alt="Paciente 11"></a>
+            </div>
+            <div style="width: 25%; padding: 10px;">
+                <a href="pagina-do-paciente-12.html"><img src="imagem-do-paciente-12.jpg" alt="Paciente 12"></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
