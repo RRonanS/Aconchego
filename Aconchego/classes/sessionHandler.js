@@ -25,7 +25,7 @@ class SesionHandler{
                 var num = parseInt(Math.random()*10000) + 10000;
             }
             this.lista[cpf] = new Session(num, validade);
-            this.numeros_usados.delete(old);
+            delete this.numeros_usados[old];
             return num
         }
         else{
@@ -42,8 +42,8 @@ class SesionHandler{
     apagarSessao(cpf){
         // Apaga a sessao referente a tal cpf
         if(cpf in this.lista){
-            this.numeros_usados.delete(this.lista[cpf]);
-            this.lista.delete(cpf);
+            delete this.numeros_usados[this.lista[cpf].num];
+            delete this.lista[cpf];
             return true;
         }
         return false;
@@ -52,7 +52,7 @@ class SesionHandler{
         // Dado o token da sessao, retorna o cpf relativo a tal token
         if(num in this.numeros_usados){
             // Procure o cpf referente a tal token e o retorne
-            for(key in this.lista){
+            for(var key in this.lista){
                 if (this.lista[key].num == num){
                     return key;
                 }
