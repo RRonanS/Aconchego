@@ -10,6 +10,7 @@ class Session{
 class SesionHandler{
     // Classe responsável pelo controle das sessoes ativas
     constructor(){
+        console.log('Inicializando SesionHandler');
         this.lista = {};
         this.numeros_usados = {};
 

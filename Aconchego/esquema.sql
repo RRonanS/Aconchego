@@ -54,3 +54,10 @@ create table atendimento(
   	anotacoes varchar(1000),
   	constraint fk_profissional_atendimento foreign key(profissional_cpf) references profissional (cpf)
 );
+
+create table usuario_imagem(
+	usuario_cpf bigint not null,
+	imagem bytea,
+	constraint pk_imagem primary key(usuario_cpf),
+	constraint fk_usuario_imagem foreign key(usuario_cpf) references usuario(cpf)
+);

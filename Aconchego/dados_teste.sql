@@ -3,7 +3,7 @@ insert into usuario values(12345678, 'Diego', 'diego.bakugan@hotmail.com', '1234
 insert into usuario values(12345679, 'Pedritto', 'pedritto@hotmail.com', '123456', 'rua 3', '92112534214');
 insert into usuario values(12345698, 'Jorge', 'jorge@hotmail.com', '123456', 'rua 4', '82112534214');
 
-insert into administrador values(6670061501);
+insert into administrador values(06670061501);
 insert into profissional values(12345678, 6670061501, 'registro');
 insert into paciente values(12345679);
 insert into padrinho values(12345698, 12345678, 'UFS', '202000');

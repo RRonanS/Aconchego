@@ -1,15 +1,16 @@
 const { Client } = require('pg');
+const banco = require('../funcoes/variaveis').banco;
 
 class usuarioDAO{
     // Objeto de acesso aos dados do usuario
     constructor(){
         // Conexão ao banco de dados
         this.client = new Client({
-            user: 'postgres',
-            host: 'localhost',
-            database: 'aconchego',
-            password: 'ultimoreino',
-            port: 5432
+            user: banco.user,
+            host: banco.host,
+            database: banco.database,
+            password: banco.password,
+            port: banco.port
         });
 
         this.client.connect(function(err) {
@@ -26,6 +27,7 @@ class usuarioDAO{
         }
         return true;
     }
+    
     async consultar_dados(cpf){
         // Retorna os dados gerais do usuario
         const result = await this.client.query(`SELECT * FROM usuario WHERE cpf = ${cpf}`);
@@ -71,6 +73,61 @@ class usuarioDAO{
         return result[0].nome;
     }
 
+    async set_imagem(cpf, img){
+        // Seta a imagem de perfil do usuario
+        var old_image = await this.get_imagem(cpf);
+        if(old_image != undefined){
+            const query = 'UPDATE usuario_imagem set imagem = $1 where usuario_cpf = $2';
+            const values = [img, cpf];
+            const result = await this.client.query(query, values);
+            return result;
+        }
+        else{
+            const query = 'INSERT INTO usuario_imagem (usuario_cpf, imagem) VALUES ($1, $2)';
+            const values = [cpf, img];
+            const result = await this.client.query(query, values);
+            return result;
+        }
+    }
+
+    async get_imagem(cpf){
+        // Retorna a imagem do usuario
+        if(cpf == undefined){
+            return;
+        }
+        const result = await this.client.query(`select i.imagem from usuario_imagem i where i.usuario_cpf = '${cpf}'`);
+        return result.rows[0];
+    }
+
+    async cadastrar(cpf, senha, nome, foto, end, email, telefone){
+        // Tenta cadastrar tal usuario no banco, caso já não exista
+        const check = await this.consultar_dados(cpf);
+        if(check.lenght == 0){
+            const ad = await this.client.query(`insert into usuario values('${cpf}', '${nome}', '${email}', '${senha}', 
+            '${end}', '${telefone}');
+            insert into usuario_imagem values('${cpf}', '${foto}');`);
+            return true;
+        }
+        return false;
+    }
+
+    async check_email(email){
+        // Verifica se tal email existe no sistema
+        const result = await this.client.query(`select * from usuario where email = '${email}'`);
+        if(result.rows.lenght == 0){
+            return false;
+        }
+        return true;
+    }
+
+    async redefinirSenha(email, nova_senha){
+        // Redefine a senha do usuario e retorna se o procedimento foi executado
+        if(this.check_email(email)){
+            const result = await this.client.query(`update usuario set senha = '${nova_senha}' where email = '${email}'`);
+            return true;
+        }
+        return false;
+    }
 }
 
 module.exports = usuarioDAO;
