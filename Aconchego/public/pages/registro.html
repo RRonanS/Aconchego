@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+    <head>
+
+        <meta charset="UTF-8">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <meta name="viewport"content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="Aconchego/Login/style.css">
+
+        <title>Aconchego</title>
+
+    </head>
+
+    <body>
+
+        <div id="login">
+
+            <div class="card">
+
+                <div class="card-header">
+                    <form action="http://localhost:8080" method="get" id="form_main">
+                        <a href="javascript:{}" onclick="document.getElementById('form_main').submit();">ACONCHEGO</a>
+                    </form>
+
+                </div>
+
+                <div class="card-content">
+                    <form action="http://localhost:8080/cadastro" method="post">
+                        <div class="card-content-area">
+
+                            <input type="text" id="usuario" autocomplete="off" placeholder="Nome" required>
+        
+                        </div>
+                        <br>
+                        <div class="card-content-area">
+
+                            <input type="text" id="cpf" autocomplete="off" placeholder="Cpf" required>
+        
+                        </div>
+                        <br>
+                        <div class="card-content-area">
+
+                            <input type="password" id="password" autocomplete="off" placeholder="Senha" required>
+        
+                        </div>
+                        <br>
+                        <div class="card-content-area">
+
+                            <input type="password" id="conf_password" autocomplete="off" placeholder="Confirmar senha" required>
+        
+                        </div>
+                        <br>
+                        <div class="card-content-area">
+
+                            <input type="text" id="endereco" autocomplete="off" placeholder="Endereço" >
+        
+                        </div>
+                        <br>
+                        <div class="card-content-area">
+
+                            <input type="file" id="foto" autocomplete="off" placeholder="foto" >
+        
+                        </div>
+                        <br>
+                        
+                        <div class="card-footer">
+                            <button type="submit" class="submit">Efetuar cadastro</button> 
+                            <br>
+                        </div>
+            
+                    </form>
+                </div>
+
+                    
+
+            </div>
+
+        </div>
+
+
+    </body>
+
+
+</html>

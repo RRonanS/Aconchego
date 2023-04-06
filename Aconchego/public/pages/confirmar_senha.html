@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+    <head>
+
+        <meta charset="UTF-8">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <meta name="viewport"content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="Aconchego/Login/style.css">
+
+        <title>Aconchego</title>
+
+    </head>
+
+    <body>
+
+        <div id="confirmar_senha">
+
+            <div class="card">
+
+                <div class="card-header">
+                    <form action="http://localhost:8080" method="get" id="form_main">
+                        <a href="javascript:{}" onclick="document.getElementById('form_main').submit();">ACONCHEGO</a>
+                    </form>
+
+                </div>
+
+                <div class="card-content">
+                    <form action="http://localhost:8080/confirmar_senha" method="post">
+                        <div class="card-content-area">
+
+                                <input type="password" id="senha" autocomplete="off" placeholder="Digite sua nova senha" name="senha" required>
+        
+                        </div>
+                        <br>
+                        <div class="card-content-area">
+
+                                <input type="password" id="conf_senha" autocomplete="off" placeholder="Confirme sua nova senha" name="conf_senha" required>
+        
+                        </div>
+                        <br>
+                        
+                        <div class="card-footer">
+                            <button type="submit" class="submit">confirmar</button> 
+                            <br>
+                        </div>
+            
+                    </form>
+                </div>
+
+                    
+
+            </div>
+
+        </div>
+
+
+    </body>
+
+
+</html>
