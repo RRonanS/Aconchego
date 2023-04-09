@@ -10,7 +10,7 @@
 
         <meta name="viewport"content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="Aconchego/Login/style.css">
+        <link rel="stylesheet" href="/styles/login.css">
 
         <title>Aconchego</title>
 
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="card-content">
-                    <form action="http://localhost:8080/recuperar_senha" method="post">
+                    <form action="http://localhost:8080/recuperarsenha" method="post">
                         <div class="card-content-area">
 
                                 <input type="email" id="email" autocomplete="off" placeholder="Digite seu email" name="email" required>
@@ -39,6 +39,7 @@
                         <br>
                         
                         <div class="card-footer">
+                            <div id="feedback" class="feedback" hidden>Verifique a caixa de entrada do seu email!</div>
                             <button type="submit" class="submit">Recuperar senha</button> 
                             <br>
                         </div>

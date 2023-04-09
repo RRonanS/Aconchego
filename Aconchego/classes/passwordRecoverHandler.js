@@ -19,7 +19,7 @@ class passwordRecoverHandler {
     }
 
     generateToken(email) {
-        // Gera um novo token de recuperação de senha daodo o email
+        // Gera um novo token de recuperação de senha dado o email
         const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         const expirationDate = new Date();
         expirationDate.setHours(expirationDate.getHours() + 24);

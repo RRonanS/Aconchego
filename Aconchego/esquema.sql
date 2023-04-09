@@ -5,7 +5,8 @@ create table usuario(
   	senha varchar(45) not null,
   	endereco varchar(45),
     telefone varchar(12),
-  	constraint pk_usuario primary key(cpf)
+  	constraint pk_usuario primary key(cpf),
+  	constraint uq_usuario_email unique(email)
 );
 
 create table administrador(
@@ -47,13 +48,17 @@ create table padrinho(
 );
 
 create table atendimento(
+	id_atendimento serial primary key,
   	profissional_cpf bigint not null,
   	paciente_cpf bigint,
-	data_atendimento date,
+  	data_atendimento date,
   	tipo varchar(20),
   	anotacoes varchar(1000),
+	atendimento_status int,
+	observacoes varchar(100),
   	constraint fk_profissional_atendimento foreign key(profissional_cpf) references profissional (cpf)
 );
+
 
 create table usuario_imagem(
 	usuario_cpf bigint not null,

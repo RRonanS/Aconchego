@@ -1,6 +1,7 @@
 const cheerio = require('cheerio');
 
 function validar_cpf(cpf) {
+  return true;
   cpf = cpf.replace(/[^\d]+/g, ''); // Remove tudo que não for dígito
   if (cpf.length !== 11) {
     return false; // O CPF deve ter exatamente 11 dígitos

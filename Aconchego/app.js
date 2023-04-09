@@ -3,8 +3,9 @@ const index_end = __dirname+'/public/pages/index.html';
 const login_end = __dirname+'/public/pages/login.html';
 const painel_end = __dirname+'/public/pages/painel.html';
 const pacientes_end = __dirname+'/public/pages/pacientes.html';
-const recuperasenha_end = __dirname+'/public/pages/recuperarsenha.html';
-const resetarsenha_end = __dirname+'/public/pages/resetarsenha.html';
+const recuperasenha_end = __dirname+'/public/pages/recuperar_senha.html';
+const resetarsenha_end = __dirname+'/public/pages/confirmar_senha.html';
+const registro_end = __dirname+'/public/pages/registro.html';
 
 // Modulos proprios
 var usuarioDAO = require('./classes/usuarioDAO');
@@ -36,6 +37,7 @@ var painel_html = set_endereco(painel_end, endereco);
 var pacientes_html = set_endereco(pacientes_end, endereco);
 var recuperarsenha_html = set_endereco(recuperasenha_end, endereco);
 var resetarsenha_html = set_endereco(resetarsenha_end, endereco);
+var registro_html = set_endereco(registro_end, endereco);
 
 // Inicializacao do app
 const oneDay = 1000 * 60 * 60 * 24;
@@ -152,7 +154,7 @@ app.get('/cadastro', function(req, res){
     var id = req.session.sessao;
     // Verifica se o usuario já está autenticado
     if(id == undefined){
-        res.send(cadastro_html);
+        res.send(registro_html);
     }
     else{
         var cpf = sh.validarSessao(id);
@@ -166,39 +168,52 @@ app.get('/cadastro', function(req, res){
     }
 });
 
-app.post('/efetuarcadastro', function(req, res){
+app.post('/efetuarcadastro', upload.single('imagem'), async function(req, res){
     // Clicou para cadastrar
     var nome = req.body.nome; 
     var cpf = req.body.cpf
     var senha = req.body.senha;
-    var foto = req.body.foto;
+    if(!req.file){
+        var foto = null;
+    }
+    else{
+        var foto = req.file.buffer;
+    }
+    var telefone = undefined;
     var endereco = req.body.endereco;
     var email = req.body.email;
-    var telefone = req.body.telefone;
-    if(senha.lenght <= 6){
+    if(senha.lenght < 6){
+        console.log('senha curta');
         res.redirect('/cadastro');
         return
     }
     else if(!validar_cpf(cpf)){
+        console.log('cpf invalido');
         res.redirect('/cadastro');
         return
     }
-    else if(nome.lenght <= 10){
+    else if(nome.lenght <= 5){
+        console.log('nome curto');
         res.redirect('/cadastro');
     }
     else if(!validar_email(email)){
+        console.log('email invalido');
         res.redirect('/cadastro');
     }
     else if(!validar_telefone(telefone)){
+        console.log('telefone invalido');
         res.redirect('/cadastro');
     }
     else{
-        var result = usuario.cadastrar(cpf, senha, nome, foto, endereco, email, telefone);
+        var result = await usuario.cadastrar(cpf, senha, nome, foto, endereco, email);
         if(!result){
-            res.redirect('/cadastro')
+            // Já existe uma conta com tal chave primaria
+            var resp = html_replace_att(registro_html, "feedback", "hidden", false);
+            res.send(resp);
         }
         else{
-            // Redirecione para efetuar login passando os parametros de cpf e senha
+            // Cadastro efetuado com sucesso
+            res.redirect("/login");
         }
     }
 });
@@ -280,6 +295,8 @@ app.post('/recuperarsenha', function(req, res){
     var email = req.body.email;
     if(usuario.check_email(email)){
         recuperadorSenha.sendEmail(email);
+        var resp = html_replace_att(recuperarsenha_html, "feedback", "hidden", false);
+        res.send(resp);
     }
 
 });
@@ -303,7 +320,7 @@ app.post('/redefinirsenha', async function(req, res){
     var token = req.body.token;
     var email = recuperadorSenha.isValidToken(token);
     if(email != undefined){
-        var nova_senha = req.body.nova_senha;
+        var nova_senha = req.body.senha;
         var resp = await usuario.redefinirSenha(email, nova_senha);
         res.redirect('/login');
     }

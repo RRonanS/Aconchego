@@ -10,7 +10,7 @@
 
         <meta name="viewport"content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="Aconchego/Login/style.css">
+        <link rel="stylesheet" href="/styles/login.css">
 
         <title>Aconchego</title>
 
@@ -30,22 +30,22 @@
                 </div>
 
                 <div class="card-content">
-                    <form action="http://localhost:8080/cadastro" method="post">
+                    <form action="http://localhost:8080/efetuarcadastro" method="post" enctype="multipart/form-data">
                         <div class="card-content-area">
 
-                            <input type="text" id="usuario" autocomplete="off" placeholder="Nome" required>
+                            <input type="text" id="usuario" autocomplete="off" placeholder="Nome" name="nome" required>
         
                         </div>
                         <br>
                         <div class="card-content-area">
 
-                            <input type="text" id="cpf" autocomplete="off" placeholder="Cpf" required>
+                            <input type="number" id="cpf" autocomplete="off" placeholder="Cpf" name="cpf" required>
         
                         </div>
                         <br>
                         <div class="card-content-area">
 
-                            <input type="password" id="password" autocomplete="off" placeholder="Senha" required>
+                            <input type="password" id="password" autocomplete="off" placeholder="Senha" name="senha" required>
         
                         </div>
                         <br>
@@ -57,18 +57,21 @@
                         <br>
                         <div class="card-content-area">
 
-                            <input type="text" id="endereco" autocomplete="off" placeholder="Endereço" >
+                            <input type="text" id="endereco" autocomplete="off" placeholder="Endereço" name="endereco">
         
                         </div>
                         <br>
                         <div class="card-content-area">
 
-                            <input type="file" id="foto" autocomplete="off" placeholder="foto" >
+                            <input type="file" id="imagem" autocomplete="off" placeholder="foto" name="imagem">
         
                         </div>
                         <br>
                         
                         <div class="card-footer">
+                            <div id="feedback" class="feedback" hidden>
+                                Já existe uma conta com tal email e/ou cpf
+                            </div>
                             <button type="submit" class="submit">Efetuar cadastro</button> 
                             <br>
                         </div>
