@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Lista de Pacientes</title>
-    <link rel="stylesheet" href="/styles/painel.css">
+    <link rel="stylesheet" href="Aconchego/Pacientes/style.css">
 </head>
 <body>
     <div class="container">
@@ -11,37 +11,52 @@
                 ACONCHEGO
             </div>
             <div class="paginas">
-                <ul class="paginas-alinhadas">
-                    <li>
-                        <form action="http://localhost:8080/menu" method="get" id="form_painel">
-                            <a href="javascript:{}" onclick="document.getElementById('form_painel').submit();">
-                                <img src="\images\home.png">    Painel
-                            </a>
-                        </form>
-                    </li>
-                    <li>
-                        <form action="http://localhost:8080/agendamento" method="get" id="form_agendamento">
-                            <a href="javascript:{}" onclick="document.getElementById('form_agendamento').submit();">
-                                <img src="\images\agenda.png">    Agendamento
-                            </a>
-                        </form>
-                    </li>
-                    <li>
-                        <form action="http://localhost:8080/pacientes" method="get" id="form_pacientes">
-                            <a href="javascript:{}" onclick="document.getElementById('form_pacientes').submit();">
-                                <img src="\images\paciente.png">    Pacientes
-                            </a>
-                        </form>
-                    </li>
-                    <li>
-                        <form action="http://localhost:8080/logout" method="get" id="form_sair">
-                            <a href="javascript:{}" onclick="document.getElementById('form_sair').submit();">    Sair</a>
-                        </form>
-                    </li>
-                </ul>
+            <ul class="paginas-alinhadas">
+                <li>
+                    <form action="http://localhost:8080/peril" method="get" id="form_perfil">
+                        <a href="javascript:{}" onclick="document.getElementById('form_perfil').submit();">
+                            <img src="\images\perfil.png">    Perfil
+                        </a>
+                    </form>
+                </li>
+                <li>
+                    <form action="http://localhost:8080/menu" method="get" id="form_painel">
+                        <a href="javascript:{}" onclick="document.getElementById('form_painel').submit();">
+                            <img src="\images\home.png">    Painel
+                        </a>
+                    </form>
+                </li>
+                <li>
+                    <form action="http://localhost:8080/agendamento" method="get" id="form_agendamento">
+                        <a href="javascript:{}" onclick="document.getElementById('form_agendamento').submit();">
+                            <img src="\images\agenda.png">    Agendamento
+                        </a>
+                    </form>
+                </li>
+                <li>
+                    <form action="http://localhost:8080/pacientes" method="get" id="form_pacientes">
+                        <a href="javascript:{}" onclick="document.getElementById('form_pacientes').submit();">
+                            <img src="\images\paciente.png">    Pacientes
+                        </a>
+                    </form>
+                </li>
+                <li>
+                    <form action="http://localhost:8080/gerenciamento" method="get" id="form_gerenciamentp">
+                        <a href="javascript:{}" onclick="document.getElementById('form_gerenciamento').submit();">
+                            <img src="\images\gerenciamento.png">    Gerenciamento
+                        </a>
+                    </form>
+                </li>
+                <li>
+                    <form action="http://localhost:8080/logout" method="get" id="form_sair">
+                        <a href="javascript:{}" onclick="document.getElementById('form_sair').submit();">    Sair</a>
+                    </form>
+                </li>
+            </ul>
             </div>
         </div>
-        <h1>Lista de Pacientes</h1>
+        <h1>Pacientes</h1>
+
         <div style="display: flex; flex-wrap: wrap;">
             <!-- Primeira Fila -->
             <div style="width: 25%; padding: 10px;">
