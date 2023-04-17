@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/styles/painel.css">
+    <link rel="stylesheet" href="Aconchego/painel/style.css">
 </head>
 <body>
     <div class="container">
@@ -14,6 +14,13 @@
             </div>
             <div class="paginas">
             <ul class="paginas-alinhadas">
+                <li>
+                    <form action="http://localhost:8080/peril" method="get" id="form_perfil">
+                        <a href="javascript:{}" onclick="document.getElementById('form_perfil').submit();">
+                            <img src="\images\perfil.png">    Perfil
+                        </a>
+                    </form>
+                </li>
                 <li>
                     <form action="http://localhost:8080/menu" method="get" id="form_painel">
                         <a href="javascript:{}" onclick="document.getElementById('form_painel').submit();">
@@ -36,6 +43,13 @@
                     </form>
                 </li>
                 <li>
+                    <form action="http://localhost:8080/gerenciamento" method="get" id="form_gerenciamentp">
+                        <a href="javascript:{}" onclick="document.getElementById('form_gerenciamento').submit();">
+                            <img src="\images\gerenciamento.png">    Gerenciamento
+                        </a>
+                    </form>
+                </li>
+                <li>
                     <form action="http://localhost:8080/logout" method="get" id="form_sair">
                         <a href="javascript:{}" onclick="document.getElementById('form_sair').submit();">    Sair</a>
                     </form>
@@ -45,9 +59,19 @@
         </div>
 
         <main class="main-content">
-            <div class="big-rectangle"></div>
-            <div class="small-rectangle"></div> 
-            <div class="small-rectangle2"></div>
+            <div class="big-rectangle">
+                <h2>Consultas do dia</h2>
+                <p>Alguma informação aqui.</p>
+            </div>
+              
+            <div class="small-rectangle">
+                <h2>Agenda</h2>
+                <p>Alguma informação aqui.</p>
+            </div>
+            <div class="small-rectangle2">
+                <h2>Chamadas</h2>
+                <p>Alguma informação aqui.</p>
+            </div> 
         </main>
     </div>
 </body>
