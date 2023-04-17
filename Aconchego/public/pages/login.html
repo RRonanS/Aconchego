@@ -10,7 +10,7 @@
 
         <meta name="viewport"content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="/styles/login.css">
+        <link rel="stylesheet" href="Aconchego/Login/style.css"">
 
         <title>Aconchego</title>
 
@@ -33,7 +33,7 @@
                     <form action="http://localhost:8080/efetuarlogin" method="post">
                         <div class="card-content-area">
 
-                                <input type="number" id="usuario" autocomplete="off" placeholder="Digite seu cpf" name="cpf">
+                                <input type="text" id="usuario" autocomplete="off" placeholder="Digite seu cpf" name="cpf">
         
                         </div>
                         <br>
@@ -42,22 +42,22 @@
                         </div>
                         <br>
                         <div class="card-footer">
-                            <div id="feedback" hidden>Credenciais Inválidas</div>
                             <button type="submit" class="submit">Login</button> 
                             <br>
                         </div>
+            
                     </form>
-                    
                 </div>
-                    <form action="http://localhost:8080/cadastro" method="get" id="form_cadastro">
+
+                    <form action="http://localhost:8080/cadastro" method="get" id="form_registro">
                         <div class="card-footer">
-                            <a href="javascript:{}" onclick="document.getElementById('form_cadastro').submit()">Cadastro</a>
+                            <a href="javascript:{}" onclick="document.getElementById('form_registro').submit();">Registro</a>
                         </div>
                     </form>
-
-                    <form action="http://localhost:8080/recuperacao" method="get" id="form_recuperacao">
+                    <br>
+                    <form action="http://localhost:8080/cadastro" method="get" id="form_cadastro">
                         <div class="card-footer">
-                            <a href="javascript:{}" onclick="document.getElementById('form_recuperacao').submit();">Esqueceu a senha?</a>
+                            <a href="javascript:{}" onclick="document.getElementById('form_cadastro').submit();">Esqueceu a senha?</a>
                         </div>
                     </form>
 
