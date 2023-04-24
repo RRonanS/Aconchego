@@ -53,18 +53,7 @@ class atendimentoDAO{
       }
     }
     
-    async get_consultas(cpf_paciente){
-      // Retorna a lista de consultas desse paciente
-      try {
-        const query = `SELECT * FROM consultas WHERE cpf_paciente = $1`;
-        const values = [cpf_paciente];
-        const result = await this.client.query(query, values);
-        return result.rows;
-      } catch (err) {
-        console.error(err);
-        throw err;
-      }
-    }
+
     
     async gravar_anotacoes(id_atendimento, anotacoes){
       // Grava as anotacoes do profissional dado tal atendimento
