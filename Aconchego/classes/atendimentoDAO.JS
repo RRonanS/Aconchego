@@ -53,7 +53,18 @@ class atendimentoDAO{
       }
     }
     
-
+    async get_consultas(cpf_paciente, data) {
+      try {
+        const query = `SELECT * FROM atendimento WHERE cpf_paciente = $1 AND data = $2`;
+        const values = [cpf_paciente, data];
+        const result = await this.client.query(query, values);
+        return result.rows;
+      } catch (error) {
+        console.error(`Erro ao buscar os atendimentos do paciente ${cpf_paciente} na data ${data}: ${error}`);
+        throw new Error(`Erro ao buscar os atendimentos do paciente ${cpf_paciente} na data ${data}: ${error}`);
+      }
+    }
+    
     
     async gravar_anotacoes(id_atendimento, anotacoes){
       // Grava as anotacoes do profissional dado tal atendimento
