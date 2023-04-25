@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+    <head>
+
+        <meta charset="UTF-8">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <meta name="viewport"content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="/styles/login.css">
+
+        <title>Aconchego</title>
+
+    </head>
+
+    <body>
+
+        <div id="login">
+
+            <div class="card">
+
+                <div class="card-header">
+                    <form action="http://localhost:8080" method="get" id="form_main">
+                        <a href="javascript:{}" onclick="document.getElementById('form_main').submit();">ACONCHEGO</a>
+                    </form>
+
+                </div>
+
+                <div class="card-content">
+                    <form action="http://localhost:8080/efetuarlogin" method="post">
+                        <div class="card-content-area">
+
+                                <input type="text" id="usuario" autocomplete="off" placeholder="Digite seu cpf" name="cpf">
+        
+                        </div>
+                        <br>
+                        <div class="card-content-area">
+                            <input type="password" id="password" autocomplete="off" placeholder="Digite sua senha" name="senha">
+                        </div>
+                        <br>
+                        <div class="card-footer">
+                            <button type="submit" class="submit">Login</button> 
+                            <br>
+                            <div id="feedback" class="feedback" style="align-self: center;" hidden>Erro: Credenciais inválidas</div>
+                        </div>
+            
+                    </form>
+                </div>
+
+                    <form action="http://localhost:8080/cadastro" method="get" id="form_registro">
+                        <div class="card-footer">
+                            <a href="javascript:{}" onclick="document.getElementById('form_registro').submit();">Registro</a>
+                        </div>
+                    </form>
+                    <br>
+                    <form action="http://localhost:8080/recuperacao" method="get" id="form_cadastro">
+                        <div class="card-footer">
+                            <a href="javascript:{}" onclick="document.getElementById('form_cadastro').submit();">Esqueceu a senha?</a>
+                        </div>
+                    </form>
+
+            </div>
+
+        </div>
+
+
+    </body>
+
+
+</html>
