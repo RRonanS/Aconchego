@@ -10,7 +10,7 @@
 
         <meta name="viewport"content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="Aconchego/Login/style.css"">
+        <link rel="stylesheet" href="/styles/login.css">
 
         <title>Aconchego</title>
 
@@ -44,6 +44,7 @@
                         <div class="card-footer">
                             <button type="submit" class="submit">Login</button> 
                             <br>
+                            <div id="feedback" class="feedback" style="align-self: center;" hidden>Erro: Credenciais inválidas</div>
                         </div>
             
                     </form>
@@ -55,7 +56,7 @@
                         </div>
                     </form>
                     <br>
-                    <form action="http://localhost:8080/cadastro" method="get" id="form_cadastro">
+                    <form action="http://localhost:8080/recuperacao" method="get" id="form_cadastro">
                         <div class="card-footer">
                             <a href="javascript:{}" onclick="document.getElementById('form_cadastro').submit();">Esqueceu a senha?</a>
                         </div>

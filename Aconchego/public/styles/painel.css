@@ -21,7 +21,7 @@ body {
 .sidebar {
     flex: 1;
     background-color: #24306E;
-    color: #ffffff;
+    color: #fff;
 }
 
 .sidebar ul {
@@ -34,7 +34,7 @@ body {
 }
 
 .sidebar ul li a {
-    color: #ffffff;
+    color: #fff;
     text-decoration: none;
     font-size: 18px;
     font-weight: bold;
@@ -50,7 +50,7 @@ body {
 }
 
 .big-rectangle {
-    background-color: #706cee;
+    background-color: #fff;
     width: 80%;
     height: 30%;
     border-radius: 20px;
@@ -58,7 +58,7 @@ body {
 }
 
 .small-rectangle {
-    background-color:#706cee;
+    background-color: #fff;
     height: 25%;;
     width: 380px;
     border-radius: 20px;
@@ -66,7 +66,7 @@ body {
 }
 
 .small-rectangle2{
-    background-color:#706cee;
+    background-color: #fff;
     height: 25%;;
     width: 380px;
     border-radius: 20px;

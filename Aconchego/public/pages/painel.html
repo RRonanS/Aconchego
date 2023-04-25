@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="Aconchego/painel/style.css">
+    <link rel="stylesheet" href="/styles/painel.css">
 </head>
 <body>
     <div class="container">
@@ -15,7 +15,7 @@
             <div class="paginas">
             <ul class="paginas-alinhadas">
                 <li>
-                    <form action="http://localhost:8080/peril" method="get" id="form_perfil">
+                    <form action="http://localhost:8080/perfil" method="get" id="form_perfil">
                         <a href="javascript:{}" onclick="document.getElementById('form_perfil').submit();">
                             <img src="\images\perfil.png">    Perfil
                         </a>
@@ -35,14 +35,14 @@
                         </a>
                     </form>
                 </li>
-                <li>
+                <li id="opcao_pacientes">
                     <form action="http://localhost:8080/pacientes" method="get" id="form_pacientes">
                         <a href="javascript:{}" onclick="document.getElementById('form_pacientes').submit();">
                             <img src="\images\paciente.png">    Pacientes
                         </a>
                     </form>
                 </li>
-                <li>
+                <li id="opcao_gerenciamento">
                     <form action="http://localhost:8080/gerenciamento" method="get" id="form_gerenciamentp">
                         <a href="javascript:{}" onclick="document.getElementById('form_gerenciamento').submit();">
                             <img src="\images\gerenciamento.png">    Gerenciamento
@@ -60,8 +60,10 @@
 
         <main class="main-content">
             <div class="big-rectangle">
-                <h2>Consultas do dia</h2>
-                <p>Alguma informação aqui.</p>
+                <h2 id="h_consultas">Próximas consultas</h2>
+                <div id="div_consultas" style="display: flex; gap: 5px;" >
+                    <p>Alguma informação aqui.</p>
+                </div>            
             </div>
               
             <div class="small-rectangle">
