@@ -1,0 +1,349 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+.sidebar {
+    flex: 1;
+    background-color: #24306E;
+    color: #fff;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 20px;
+}
+
+.sidebar ul li {
+    margin-bottom: 20px;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.main-content {
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #F5F5F5;
+}
+
+.big-rectangle {
+    background-color: #fff;
+    width: 50%;
+    height: 15%;
+    border-radius: 20px;
+    margin: 0 auto;
+    position: absolute;
+    top: 5%; /* altere este valor para ajustar a posição vertical */
+    left: 25%;
+    right: 0;
+}
+.big-rectangle p {
+    text-align: center;
+    padding-bottom: 50px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    font-size: 200%;
+  }
+
+.big-rectangle2 {
+    background-color: #fff;
+    width: 50%;
+    height: 15%;
+    border-radius: 20px;
+    margin: 0 auto;
+    position: absolute;
+    top: 83%; /* altere este valor para ajustar a posição vertical */
+    left: 25%;
+    right: 0;
+}
+.big-rectangle2 p {
+    text-align: center;
+    padding-bottom: 50px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    font-size: 200%;
+  }
+.big-rectangle2 h2 {
+    text-align: center;
+    padding-bottom: 20px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    font-size: 120%;
+  }
+
+.big-rectangle2 label {
+    text-align: center;
+    padding-bottom: 50px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    font-size: 100%;
+    
+  }
+.big-rectangle2 button {
+   
+    display: flex;
+
+    flex-direction: column;
+  }
+
+.content-box {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    height: 45%;
+    box-sizing: border-box;
+  }
+  
+.content-box a {
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.content-box a img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.content-box a p {
+  font-size: 16px;
+  color: #333;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+.content-box p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 0;
+  flex-grow: 1;
+}
+
+.big-square {
+    background-color: #fff;
+    width: 50vw; 
+    height: 30vw; 
+    border-radius: 20px;
+    margin: 0 auto;
+    position: absolute;
+    top: 22%;
+    left: 25%;
+    right: 0;
+  }
+
+
+
+.header{
+
+    margin-top: 50%;
+    text-align: center;
+    padding-bottom: 50px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    font-size: 205%;
+    
+}
+
+.paginas{
+    text-align: center;
+}
+
+.meu-form {
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+}
+.meu-form label {
+    text-align: center;
+    padding-bottom: 50px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    font-size: 120%;
+}
+
+.meu-form button{
+   
+
+    display: flex;
+
+    flex-direction: column;
+    
+   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+
+#login {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    height: 100vh;
+
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+}
+
+.card {
+
+    background-color: #0EB9F9;
+    padding: 40px;
+    border-radius: 20px;
+    width:280px;
+
+}
+
+
+.card-header {
+
+    text-align: center;
+    padding-bottom: 50px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    font-size: 200%;
+
+
+}
+
+.card-header a{
+    text-decoration: none;
+    color: #24306E;
+}
+
+.card-content-area {
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding:10px 0;
+
+}
+
+.card-content-area input{
+
+    margin-top: 6px;
+
+    padding:10px;
+
+    background-color: #fff;
+
+    border:none;
+
+    border-bottom: 1px solid #e1e1e1;
+
+    outline: none;
+
+    color: black;
+
+    border-radius: 20px;
+
+}
+
+.card-footer {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+.card-footer .submit{
+
+    width: 100%;
+
+    height: 40px;
+
+    background-color: #24306E;
+
+    border-radius: 10px;
+
+    border:none;
+
+    color:#e1e1e1;
+
+    margin: 10px 0;
+
+}
+
+.card-footer a {
+
+    text-align: center;
+
+    font-size: 12px;
+
+    opacity: 0.8;
+
+    color: #fff;
+
+    text-decoration: none;
+
+}
+
+.card2 {
+
+    background-color: #0EB9F9;
+    padding: 40px;
+    border-radius: 20px;
+    width:280px;
+
+}
+
+
+
