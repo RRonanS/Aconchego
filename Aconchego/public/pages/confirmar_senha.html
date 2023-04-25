@@ -27,30 +27,32 @@
         </script>
     </head>
     <body>
-        <div class="card">
-            <div class="card-header">
-                <form action="http://localhost:8080" method="get" id="form_main">
-                    <a href="javascript:{}" onclick="document.getElementById('form_main').submit();">ACONCHEGO</a>
-                </form>
-            </div>
-            <div class="card-content">
-                <form action="http://localhost:8080/redefinirsenha" method="post" id="form_redefinirsenha">
-                    <input type="text" name="token" id="token" class="token" hidden>
-                    <div class="card-content-area">
-                        <input type="password" id="senha" autocomplete="off" placeholder="Digite sua nova senha" name="senha" required>
-                    </div>
-                    <br>
-                    <div class="card-content-area">
-                        <input type="password" id="conf_senha" autocomplete="off" placeholder="Confirme sua nova senha" name="conf_senha" required>
-                    </div>
-                    <br>
-                    <div class="card-footer">
-                        <div id="feedback" class="feedback" hidden></div>
-                        <button type="submit" class="submit">confirmar</button>
+        <div id="login">
+            <div class="card">
+                <div class="card-header">
+                    <form action="http://localhost:8080" method="get" id="form_main">
+                        <a href="javascript:{}" onclick="document.getElementById('form_main').submit();">ACONCHEGO</a>
+                    </form>
+                </div>
+                <div class="card-content">
+                    <form action="http://localhost:8080/redefinirsenha" method="post" id="form_redefinirsenha">
+                        <input type="text" name="token" id="token" class="token" hidden>
+                        <div class="card-content-area">
+                            <input type="password" id="senha" autocomplete="off" placeholder="Digite sua nova senha" name="senha" required>
+                        </div>
                         <br>
-                    </div>
-                </form>
+                        <div class="card-content-area">
+                            <input type="password" id="conf_senha" autocomplete="off" placeholder="Confirme sua nova senha" name="conf_senha" required>
+                        </div>
+                        <br>
+                        <div class="card-footer">
+                            <div id="feedback" class="feedback" hidden></div>
+                            <button type="submit" class="submit">confirmar</button>
+                            <br>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+        </div>   
     </body>
 </html>
