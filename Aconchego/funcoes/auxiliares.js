@@ -37,7 +37,7 @@ function html_replace(html, id, novo_conteudo) {
   // Substitui o conteudo do elemento id desse html pelo novo conteudo
   const $ = cheerio.load(html);
   const elemento = $('#'+id);
-  elemento.text(novo_conteudo);
+  elemento.html(novo_conteudo);
   const result = $.html();
   return result;
 }
@@ -56,8 +56,91 @@ function html_replace_att(html, id, att, novo_valor){
   return result;
 }
 
+function listar_pacientes_html(html, pacientes){
+    // Itera sobre a tela de pacientes, adicionando cada paciente da lista, por fim a retorna
+    var texto = ``;
+    for(let i in pacientes){
+      var paciente = pacientes[i];
+      const buffer = paciente.imagem;
+      const base64 = buffer.toString('base64');
+      const dataUri = `data:image/jpeg;base64,${base64}`; 
+      texto += `
+        <div style="padding: 10px;">
+          <form action="/paciente" method="get" id="form_paciente">
+            <input type="hidden" name="cpf" value="${paciente.cpf}">
+            <a href="javascript:{}" onclick="document.getElementById('form_paciente').submit();">
+              <img src="${dataUri}" alt="${paciente.nome}" width="150" height="150">
+              <p>
+              ${paciente.nome}
+              </p>
+            </a>
+          </form>
+        </div>
+      `
+    }
+    return html_replace(html, 'lista', texto);
+}
+
+function listar_consultas_html(html, consultas, paciente=true){
+    // Gera a lista de consultas em html
+    var texto = ``;
+    if(!paciente){
+      html = html_replace(html, 'h_consultas', 'Próximos pacientes')
+    }
+    for(var i=0; i < consultas.length; i++){
+      var consulta = consultas[i];
+      var atual = new Date();
+      var nome = consulta.nome;
+      if(paciente){
+        nome = 'Doutor ' + nome;
+      }
+      var hora = consulta.data_atendimento.getHours();
+      if(hora < 10){
+        hora = '0' + hora;
+      }
+      var minuto = consulta.data_atendimento.getMinutes();
+      if(minuto < 10){
+        minuto = '0' + minuto;
+      }
+      var dia = consulta.data_atendimento.getDate();
+      var mes = consulta.data_atendimento.getMonth();
+      if(dia < 10){
+        dia = '0' + dia;
+      }
+      if(mes < 10){
+        mes = '0' + (mes+1);
+      }
+      var dia_consulta =`${dia}/${mes}`;
+      if(consulta.data_atendimento.getDate() == atual.getDate() && consulta.data_atendimento.getMonth() == atual.getMonth()){
+        dia_consulta = 'Hoje';
+      }
+
+      var dataUri = undefined;
+      const buffer = consulta.imagem;
+      if(buffer != undefined){
+        const base64 = buffer.toString('base64');
+        dataUri = `data:image/jpeg;base64,${base64}`; 
+      }
+      console.log(consulta);
+      texto += `
+      <form action="/check_consulta" method="get" id="form_consulta">
+        <div style="border: 2px solid; max-width: 110px;">
+          <a href="javascript:{}" onclick="document.getElementById('form_consulta').submit();">
+            <img src="${dataUri}" width="100" height="100">
+            <p>${nome}</p>
+            <p>${dia_consulta} às ${hora}</p>
+          </a>
+        </div>
+      </form>
+      `;
+    }
+    return html_replace(html, 'div_consultas', texto);
+};
+
 module.exports.validar_cpf = validar_cpf;
 module.exports.validar_email = validar_email;
 module.exports.validar_telefone = validar_telefone;
 module.exports.html_replace = html_replace;
 module.exports.html_replace_att = html_replace_att;
+module.exports.listar_pacientes_html = listar_pacientes_html;
+module.exports.listar_consultas_html = listar_consultas_html;

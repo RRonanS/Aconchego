@@ -27,6 +27,7 @@ class passwordRecoverHandler {
             email: email,
             expirationDate: expirationDate
         };
+        console.log("Token de recuperação gerado para", email, token);
         return token;
     }
 

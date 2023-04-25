@@ -1,5 +1,5 @@
 // Path das telas
-const index_end = __dirname+'/public/pages/index.html';
+const index_end = __dirname+'/public/pages/home.html';
 const login_end = __dirname+'/public/pages/login.html';
 const painel_end = __dirname+'/public/pages/painel.html';
 const pacientes_end = __dirname+'/public/pages/pacientes.html';
@@ -9,6 +9,7 @@ const registro_end = __dirname+'/public/pages/registro.html';
 
 // Modulos proprios
 var usuarioDAO = require('./classes/usuarioDAO');
+var atendimentoDAO = require('./classes/atendimentoDAO');
 var variaveis = require("./funcoes/variaveis");
 var auxiliares = require('./funcoes/auxiliares');
 var Sh = require('./classes/sessionHandler');
@@ -29,6 +30,7 @@ var sessions = require('express-session');
 const fs = require("fs");
 const { dirname } = require('path');
 const multer = require('multer');
+const { isNumber } = require('util');
 
 // Modifica os formularios das telas de localhost para endereco, armazena a pagina html em formato string
 var index_html = set_endereco(index_end, endereco);
@@ -44,6 +46,7 @@ const oneDay = 1000 * 60 * 60 * 24;
 
 var usuario = new usuarioDAO();
 var recuperadorSenha = new Pr();
+var atendimento = new atendimentoDAO();
 var sh = new Sh();
 
 var app = express();
@@ -81,7 +84,7 @@ app.post('/addimagem', upload.single('imagem'), async function(req, res) {
     const cpf = req.body.cpf;
     const imagem = req.file.buffer;
     var resp = await usuario.set_imagem(cpf, imagem);
-    res.redirect('/addimagem');
+    res.redirect('/imagem');
 });
 
 app.get('/checkimage', async function(req, res){
@@ -101,8 +104,7 @@ app.get('/checkimage', async function(req, res){
 
 app.get('/', function(req, res){
     // Pagina inicial
-    //res.send(index_html);
-    res.redirect('/login');
+    res.send(index_html);
 });
 
 app.get('/login', function(req, res){
@@ -128,7 +130,11 @@ app.post('/efetuarlogin', async function(req, res){
     // Clicou para fazer login
     const cpf = req.body.cpf;
     const senha = req.body.senha;
-    if(validar_cpf(cpf)){
+    if(cpf == undefined || senha == undefined){
+        var temp = html_replace_att(login_html, "feedback", "hidden", false);
+        res.send(temp);
+    }
+    else if(validar_cpf(cpf)){
         // Valida o cpf e verifica se as credenciais são validas para efetuar a autenticacao do usuario
         if(await usuario.logar(cpf, senha)){
             // Armazena o token referente a sessao do usuario como cookie
@@ -236,7 +242,24 @@ app.get('/menu', async function(req, res){
         if(cpf != -1){
             var perfil = await usuario.get_perfil(cpf);
             console.log(perfil);
-            res.send(painel_html);
+            var resp = painel_html;
+            // Esconde as opcoes dado o perfil
+            if(perfil != 'administrador'){
+                resp = html_replace_att(resp, 'opcao_gerenciamento', 'hidden', true);
+            }
+            if(perfil != 'profissional'){
+                resp = html_replace_att(resp, 'opcao_pacientes', 'hidden', true);
+            }
+            // Preenche a aba que mostra as proximas consultas
+            if(perfil == 'paciente'){
+                consultas = await atendimento.get_consultas_paciente(cpf, new Date());
+                resp = auxiliares.listar_consultas_html(resp, consultas);
+            }
+            if(perfil == 'profissional'){
+                consultas = await atendimento.get_consultas_profissional(cpf, new Date());
+                resp = auxiliares.listar_consultas_html(resp, consultas, false);
+            }
+            res.send(resp);
         }
         else{
             req.session.destroy();
@@ -257,7 +280,13 @@ app.get('/pacientes', async function(req, res){
             var perfil = await usuario.get_perfil(cpf);
             if(perfil == 'profissional' || perfil == 'administrador'){
                 // Valido
-                res.send(pacientes_html);
+                var pacientes = await atendimento.get_pacientes(cpf);
+                // Gera a lista em html dos pacientes, junta na tela de pacientes e envia
+                var tela = auxiliares.listar_pacientes_html(pacientes_html, pacientes);
+                if(perfil != 'administrador'){
+                    tela = html_replace_att(tela, 'opcao_gerenciamento', 'hidden', true);
+                }
+                res.send(tela);
             }
             else{
                 // Perfil invalido
@@ -273,6 +302,35 @@ app.get('/pacientes', async function(req, res){
     else{
         res.redirect('/login');
     }
+});
+
+app.get('/paciente', async function(req, res){
+    // Tela para mostrar um determinado paciente do profissional
+    var cpf_paciente = req.body.cpf;
+    var session_id = req.session.sessao;
+    if(session_id != undefined){
+        var cpf = sh.validarSessao(session_id);
+        if(cpf != -1){
+            var perfil = await usuario.get_perfil(cpf);
+            if(perfil == 'profissional' || perfil == 'administrador'){
+                // Valido, retorne a tela com os dados do paciente
+                res.send();
+            }
+            else{
+                // Perfil invalido
+                res.redirect('/menu');
+            }
+        }
+        else{
+            // Sessao invalidada
+            req.session.sessao.destroy();
+            res.redirect('/login');
+        }
+    }
+    else{
+        res.redirect('/login');
+    }
+
 });
 
 app.get('/agendamento', function(req, res){

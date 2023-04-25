@@ -52,7 +52,7 @@ class usuarioDAO{
         if(dados.administrador_cpf != null){
             return 'administrador';
         }
-        if(dados.profssional_cpf != null){
+        if(dados.profissional_cpf != null){
             return 'profissional';
         }
         if(dados.padrinho_cpf != null){
@@ -61,7 +61,7 @@ class usuarioDAO{
         if(dados.paciente_cpf != null){
             return 'paciente';
         }
-        return undefined;
+        return 'paciente';
     }
     
     async get_nome(cpf){
@@ -129,35 +129,6 @@ class usuarioDAO{
         }
         return false;
     }
-    
-    
-    async trocar_nome(cpf, novo_nome){
-        // Troca o nome do usuário
-        const result = await this.client.query(`UPDATE usuario SET nome = '${novo_nome}' WHERE cpf = '${cpf}'`);
-        return result.rowCount > 0;
-    }
-
-    async trocar_telefone(cpf, novo_telefone){
-        // Atualiza o telefone do usuário
-        const query = `UPDATE usuario SET telefone = '${novo_telefone}' WHERE cpf = '${cpf}'`;
-        const result = await this.client.query(query);
-        return result.rowCount > 0; // Retorna true se alguma linha foi afetada
-    }
-
-    async trocar_endereco(cpf, novo_endereco){
-        // Atualiza o endereço do usuário com o CPF fornecido
-        const result = await this.client.query(`UPDATE usuario SET endereco = '${novo_endereco}' WHERE cpf = '${cpf}'`);
-        return result.rowCount > 0; // Retorna true se o endereço foi atualizado com sucesso
-    }
-
-    async trocar_email(cpf, novo_email){
-        // Tenta atualizar o email do usuário no banco de dados
-        const query = 'UPDATE usuario SET email = $1 WHERE cpf = $2';
-        const values = [novo_email, cpf];
-        const result = await this.client.query(query, values);
-        return result.rowCount > 0; // Retorna verdadeiro se uma linha foi afetada (ou seja, o email foi atualizado)
-    }
-    
 }
 
 module.exports = usuarioDAO;
