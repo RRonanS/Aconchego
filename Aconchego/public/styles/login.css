@@ -98,6 +98,12 @@
 
 }
 
+.card-content-area span{
+    margin-top: 6px;
+
+    padding:10px;
+}
+
 .card-footer a {
 
     text-align: center;
