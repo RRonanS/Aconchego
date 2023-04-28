@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Lista de Pacientes</title>
-    <link rel="stylesheet" href="/styles/painel.css">
+    <link rel="stylesheet" href="/styles/pacientes.css">
 </head>
 <body>
     <div class="container">
@@ -55,12 +55,85 @@
             </ul>
             </div>
         </div>
-        
-        <h1>Pacientes</h1>
+        <div class="main-content">
+            <div class="small-rectangle">
+                <h1>Lista de pacientes</h1>
+            </div>
 
-        <div style="display: flex; flex-wrap: wrap; width: 75%;" id="lista">
-        
+            <div class="big-square">
+
+                <div style="display: flex; flex-wrap: wrap; width: 75%;" id="lista" class="myBtn">
+                
+            </div>
+
+            <div id="myModal" class="modal">
+                <!-- Conteúdo do modal -->
+                <div class="modal-content animacao">
+                    <span class="close">&times;</span>
+                    <h2>Histórico de Consultas do Paciente</h2>
+                    <div class="card-content">
+                        <button onclick="window.location.href='diario.html'">Diário</button>
+                    </div>
+                    <br>
+                    <br>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Profissional</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>01/01/2022</td>
+                                <td>Dr. João da Silva</td>
+                            </tr>
+                            <tr>
+                                <td>15/03/2022</td>
+                                <td>Dra. Maria Fernanda</td>
+                            </tr>
+                            <tr>
+                                <td>25/05/2022</td>
+                                <td>Dr. José Luiz</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
         </div>
+
     </div>
+
+    <script>
+        // Obtém o modal
+        var modal = document.getElementById("myModal");
+      
+        // Obtém todos os botões
+        var btns = document.getElementsByClassName("myBtn");
+      
+        // Obtém o elemento <span> que fecha o modal
+        var span = document.getElementsByClassName("close")[0];
+      
+        // Adiciona um evento de clique a cada botão
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].onclick = function() {
+            modal.style.display = "block";
+          }
+        }
+      
+        // Quando o usuário clicar no <span> (x), fecha o modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+      
+        // Quando o usuário clicar em qualquer lugar fora do modal, fecha o modal
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+      </script>
 </body>
 </html>
