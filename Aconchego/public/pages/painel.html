@@ -62,9 +62,16 @@
             <div class="big-rectangle">
                 <h2 id="h_consultas">Próximas consultas</h2>
                 <div id="div_consultas" style="display: flex; gap: 5px;" >
-                    <p>Alguma informação aqui.</p>
-                </div>            
+                    <div class="content-box">
+                        <a href="#" >
+                          <img src="perfil_resized.png"  alt="Médico 1" class="doctor-image" data-doctor="Médico 1" id="btn-agendar">
+                          <p id="big-rectangle-text"> Doutor exemplo</p>
+                        </a>
+                    </div>
+                </div>  
+                        
             </div>
+             
               
             <div class="small-rectangle">
                 <h2>Agenda</h2>
@@ -74,7 +81,32 @@
                 <h2>Chamadas</h2>
                 <p>Alguma informação aqui.</p>
             </div> 
+
+            <div id="popup-agendar">
+                <form>
+                  <h2>Agendar consulta</h2>
+                  <br>
+                  <!-- Adicione os campos do formulário aqui -->
+                  <button type="submit">Entrar na consulta</button>
+                  <button type="button" id="btn-cancelar">Cancelar</button>
+                </form>
+            </div> 
         </main>
     </div>
+
+    <script>
+        const btnAgendar = document.querySelector('#btn-agendar');
+        const popupAgendar = document.querySelector('#popup-agendar');
+        const btnCancelar = document.querySelector('#btn-cancelar');
+    
+        btnAgendar.addEventListener('click', function() {
+          popupAgendar.style.display = 'block';
+        });
+    
+        btnCancelar.addEventListener('click', function() {
+          popupAgendar.style.display = 'none';
+        });
+      </script>
+
 </body>
 </html>
