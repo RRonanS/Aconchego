@@ -42,7 +42,7 @@
 
                             <label for="cpf">Cpf</label>
                             <input type="number" id="cpf" autocomplete="off" placeholder="Cpf" name="cpf" required>
-                            <span id="cpf-ajuda" style="display:none">Preencha com os 11 dígitos do seu CPF, sem pontos ou traços.</span>
+        
                         </div>
                         <br>
                         <div class="card-content-area">
@@ -56,13 +56,13 @@
 
                             <label for="conf_password">Confirme a senha</label>
                             <input type="password" id="conf_password" autocomplete="off" placeholder="Confirmar senha" required>
-                            <span id="senha-feedback"></span>
+        
                         </div>
                         <br>
                         <div class="card-content-area">
 
                             <label for="endereco">Endereço</label>
-                            <input type="text" id="endereco" autocomplete="off" placeholder="Endereço" name="endereco" required>
+                            <input type="text" id="endereco" autocomplete="off" placeholder="Endereço" name="endereco">
         
                         </div>
                         <br>
@@ -90,56 +90,6 @@
             </div>
 
         </div>
-        <script>
-            //////////////////cpf//////////////////////
-            function mostrarAjuda() {
-              document.getElementById("cpf-ajuda").style.display = "inline";
-            }
-            
-            function esconderAjuda() {
-              document.getElementById("cpf-ajuda").style.display = "none";
-            }
-            ///////////////////////////////////////////
-            
-            // Obter referências aos campos de senha e confirmar senha
-            var senhaInput = document.getElementById("password");
-            var confirmarSenhaInput = document.getElementById("conf_password");
-            // Obter referência ao elemento de feedback
-            var senhaFeedback = document.getElementById("senha-feedback");
-
-            // Adicionar evento oninput aos campos de senha e confirmar senha
-            senhaInput.addEventListener("input", validarSenha);
-            confirmarSenhaInput.addEventListener("input", validarSenha);
-
-            function validarSenha() {
-
-                if (senhaInput.value.length < 6) {
-                senhaFeedback.textContent = "A senha deve ter pelo menos 6 caracteres.";
-                senhaFeedback.style.color = "red";
-                } else {
-                // Verificar se os valores dos campos de senha e confirmar senha são iguais
-                if (senhaInput.value === confirmarSenhaInput.value) {
-                  // Se forem iguais, exibir mensagem de feedback positivo
-                  senhaFeedback.textContent = "As senhas coincidem!";
-                  senhaFeedback.style.color = "green";
-                } else {
-                  // Se não forem iguais, exibir mensagem de feedback negativo
-                  senhaFeedback.textContent = "As senhas não coincidem.";
-                  senhaFeedback.style.color = "red";
-                }
-              // Verificar se os valores dos campos de senha e confirmar senha são iguais
-              if (senhaInput.value === confirmarSenhaInput.value) {
-                // Se forem iguais, exibir mensagem de feedback positivo
-                senhaFeedback.textContent = "As senhas coincidem!";
-                senhaFeedback.style.color = "green";
-              } else {
-                // Se não forem iguais, exibir mensagem de feedback negativo
-                senhaFeedback.textContent = "As senhas não coincidem.";
-                senhaFeedback.style.color = "red";
-              }
-            }
-        }
-        </script>
 
 
     </body>

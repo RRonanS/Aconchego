@@ -6,6 +6,9 @@ const pacientes_end = __dirname+'/public/pages/pacientes.html';
 const recuperasenha_end = __dirname+'/public/pages/recuperar_senha.html';
 const resetarsenha_end = __dirname+'/public/pages/confirmar_senha.html';
 const registro_end = __dirname+'/public/pages/registro.html';
+const embreve_end = __dirname+'/public/pages/tela_provisoria.html';
+const agendamento_end = __dirname+'/public/pages/agendamento.html';
+const perfil_end = __dirname+'/public/pages/perfil.html';
 
 // Modulos proprios
 var usuarioDAO = require('./classes/usuarioDAO');
@@ -40,6 +43,8 @@ var pacientes_html = set_endereco(pacientes_end, endereco);
 var recuperarsenha_html = set_endereco(recuperasenha_end, endereco);
 var resetarsenha_html = set_endereco(resetarsenha_end, endereco);
 var registro_html = set_endereco(registro_end, endereco);
+var agendamento_html = set_endereco(agendamento_end, endereco);
+var perfil_html = set_endereco(perfil_end, endereco);
 
 // Inicializacao do app
 const oneDay = 1000 * 60 * 60 * 24;
@@ -241,7 +246,6 @@ app.get('/menu', async function(req, res){
         var cpf = sh.validarSessao(req.session.sessao);
         if(cpf != -1){
             var perfil = await usuario.get_perfil(cpf);
-            console.log(perfil);
             var resp = painel_html;
             // Esconde as opcoes dado o perfil
             if(perfil != 'administrador'){
@@ -333,13 +337,101 @@ app.get('/paciente', async function(req, res){
 
 });
 
-app.get('/agendamento', function(req, res){
+app.get('/agendamento', async function(req, res){
     // Tela de agendamento
+    var id = req.session.sessao;
+    // Verifica se o usuario já está autenticado
+    if(id == undefined){
+        res.send(login_html);
+    }
+    else{
+        var cpf = sh.validarSessao(id);
+        if(cpf == -1){
+            req.session.destroy();
+            res.send(login_html);
+        }
+        else{
+            // Logado
+            var resp = agendamento_html;
+            if(req.query.cpf != undefined){
+                // Há um doutor selecionado
+                var datas = await atendimento.datas_diponiveis(req.query.cpf, 7, 6, 18);
+                resp = auxiliares.listar_horarios_html(agendamento_html, datas, req.query.cpf);
+            }
+            var perfil = await usuario.get_perfil(cpf);
+            // Esconde as opcoes dado o perfil
+            if(perfil != 'administrador'){
+                resp = html_replace_att(resp, 'opcao_gerenciamento', 'hidden', true);
+            }
+            if(perfil != 'profissional'){
+                resp = html_replace_att(resp, 'opcao_pacientes', 'hidden', true);
+            }
+            resp = auxiliares.listar_profissionais_html(resp, await atendimento.get_profissionais());
+            res.send(resp);
+        }
+    }
 });
 
-app.get('/perfil', function(req, res){
-    // Mostra o perfil de determinado usuario
-    var perfil_cpf = req.body.cpf;
+app.get('/agendar', async function(req, res){
+    // Agenda no banco de dados
+    var id = req.session.sessao;
+    // Verifica se o usuario já está autenticado
+    if(id == undefined){
+        res.send(login_html);
+    }
+    else{
+        var cpf = sh.validarSessao(id);
+        if(cpf == -1){
+            req.session.destroy();
+            res.send(login_html);
+        }
+        else{
+            // Logado
+            const data = new Date(req.query.data_atendimento);
+            const dataFormatada = data.toISOString();
+            const resp = atendimento.criar_atendimento(req.query.cpf, cpf, dataFormatada, 1);
+            res.redirect('/menu');
+        }
+    }
+});
+
+app.get('/perfil', async function(req, res){
+    // Mostra a tela de perfil
+    var id = req.session.sessao;
+    // Verifica se o usuario já está autenticado
+    if(id == undefined){
+        res.redirect('/login');
+    }
+    else{
+        var cpf = sh.validarSessao(id);
+        if(cpf == -1){
+            req.session.destroy();
+            res.redirect('/login');
+        }
+        else{
+            // Logado
+            var resp = perfil_html;
+            // Pega a imagem do usuario
+            var buffer = await usuario.get_imagem(cpf);
+            var dataUri = undefined;
+            if(buffer != undefined){
+              const base64 = buffer.toString('base64');
+              dataUri = `data:image/jpeg;base64,${base64}`; 
+            }
+            var perfil = await usuario.get_perfil(cpf);
+            // Esconde as opcoes dado o perfil
+            if(perfil != 'administrador'){
+                resp = html_replace_att(resp, 'opcao_gerenciamento', 'hidden', true);
+            }
+            if(perfil != 'profissional'){
+                resp = html_replace_att(resp, 'opcao_pacientes', 'hidden', true);
+            }
+            resp = html_replace(resp, 'foto', `<img src='${dataUri}' alt='Imagem do perfil' style="width: 100px; height: 100px;">`)
+            resp = html_replace_att(resp, 'nome', 'value', await usuario.get_nome(cpf));
+            resp = html_replace_att(resp, 'endereco', 'value', await usuario.get_endereco(cpf));
+            res.send(resp);
+        }
+    }
 
 });
 
@@ -394,3 +486,20 @@ app.post('/redefinirsenha', async function(req, res){
 // Release 1:
 //  Realizar sistema de cadastro e de login,
 //  Realizar consultas com pacientes e realizar a designação dos padrinhos nos atendimentos 
+
+// Requisições para telas que não estarão nessa release
+app.get('/sobrenos', function(req, res){
+    res.sendFile(embreve_end);
+});
+app.get('/servico', function(req, res){
+    res.sendFile(embreve_end);
+});
+app.get('/psicologos', function(req, res){
+    res.sendFile(embreve_end);
+});
+app.get('/meditacao', function(req, res){
+    res.sendFile(embreve_end);
+});
+app.get('/perfil', function(req, res){
+
+});

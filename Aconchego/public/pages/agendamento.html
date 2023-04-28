@@ -4,12 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        .agendamento-form{
-          display: none;
-        }
-      </style>
+    <link rel="stylesheet" href="/styles/agendamento.css">
+
 </head>
 <body>
     <div class="container">
@@ -18,48 +14,48 @@
                 ACONCHEGO
             </div>
             <div class="paginas">
-            <ul class="paginas-alinhadas">
-                <li>
-                    <form action="http://localhost:8080/peril" method="get" id="form_perfil">
-                        <a href="javascript:{}" onclick="document.getElementById('form_perfil').submit();">
-                            <img src="\images\perfil.png">    Perfil
-                        </a>
-                    </form>
-                </li>
-                <li>
-                    <form action="http://localhost:8080/menu" method="get" id="form_painel">
-                        <a href="javascript:{}" onclick="document.getElementById('form_painel').submit();">
-                            <img src="\images\home.png">    Painel
-                        </a>
-                    </form>
-                </li>
-                <li>
-                    <form action="http://localhost:8080/agendamento" method="get" id="form_agendamento">
-                        <a href="javascript:{}" onclick="document.getElementById('form_agendamento').submit();">
-                            <img src="\images\agenda.png">    Agendamento
-                        </a>
-                    </form>
-                </li>
-                <li>
-                    <form action="http://localhost:8080/pacientes" method="get" id="form_pacientes">
-                        <a href="javascript:{}" onclick="document.getElementById('form_pacientes').submit();">
-                            <img src="\images\paciente.png">    Pacientes
-                        </a>
-                    </form>
-                </li>
-                <li>
-                    <form action="http://localhost:8080/gerenciamento" method="get" id="form_gerenciamentp">
-                        <a href="javascript:{}" onclick="document.getElementById('form_gerenciamento').submit();">
-                            <img src="\images\gerenciamento.png">    Gerenciamento
-                        </a>
-                    </form>
-                </li>
-                <li>
-                    <form action="http://localhost:8080/logout" method="get" id="form_sair">
-                        <a href="javascript:{}" onclick="document.getElementById('form_sair').submit();">    Sair</a>
-                    </form>
-                </li>
-            </ul>
+                <ul class="paginas-alinhadas">
+                    <li>
+                        <form action="http://localhost:8080/perfil" method="get" id="form_perfil">
+                            <a href="javascript:{}" onclick="document.getElementById('form_perfil').submit();">
+                                <img src="\images\perfil.png">    Perfil
+                            </a>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="http://localhost:8080/menu" method="get" id="form_painel">
+                            <a href="javascript:{}" onclick="document.getElementById('form_painel').submit();">
+                                <img src="\images\home.png">    Painel
+                            </a>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="http://localhost:8080/agendamento" method="get" id="form_agendamento">
+                            <a href="javascript:{}" onclick="document.getElementById('form_agendamento').submit();">
+                                <img src="\images\agenda.png">    Agendamento
+                            </a>
+                        </form>
+                    </li>
+                    <li id="opcao_pacientes">
+                        <form action="http://localhost:8080/pacientes" method="get" id="form_pacientes">
+                            <a href="javascript:{}" onclick="document.getElementById('form_pacientes').submit();">
+                                <img src="\images\paciente.png">    Pacientes
+                            </a>
+                        </form>
+                    </li>
+                    <li id="opcao_gerenciamento">
+                        <form action="http://localhost:8080/gerenciamento" method="get" id="form_gerenciamento">
+                            <a href="javascript:{}" onclick="document.getElementById('form_gerenciamento').submit();">
+                                <img src="\images\gerenciamento.png">    Gerenciamento
+                            </a>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="http://localhost:8080/logout" method="get" id="form_sair">
+                            <a href="javascript:{}" onclick="document.getElementById('form_sair').submit();">    Sair</a>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -68,22 +64,30 @@
             <div class="big-rectangle">
                 <p>Escolha o doutor que deseja agendar sua consulta</p>
             </div>   
-            <div class="big-square">
+            <div class="big-square" id="profissionais" style="display: flex;">
                 <div class="content-box">
-                    <a href="#" >
-                      <img src="user_resized.png"  alt="Médico 1" class="doctor-image" data-doctor="Médico 1">
+                    <a href="agendamento">
+                      <input type="number" name="cpf" value="" hidden>
+                      <img src="/images/user_resized.png"  alt="Médico 1" class="doctor-image" data-doctor="Médico 1">
                       <p id="big-rectangle-text"> Doutor exemplo</p>
                     </a>
                 </div>
             </div>
+
             <div class="big-rectangle2">
-                <form action="http://localhost:8080/agendamento" method="get" id="form_agendar" class="agendamento-form" id="appointment-form">
+                <form action="http://localhost:8080/agendar" method="get" id="form_agendar" class="agendamento-form" id="appointment-form">
                     <h2>Agendamento de consulta</h2>
+                    <input type="text" name="cpf" id="cpf_data" hidden>
                     <input type="hidden" id="doctor-name" name="doctor-name">
                     <label for="appointment-date">Data e hora da consulta:</label>
-                    <input type="datetime-local" id="appointment-date" name="appointment-date">
+                    <select type="datetime-local" id="data_atendimento" name="data_atendimento">
+                        <option value="nenhuma data disponivel">Nenhuma data disponivel</option>
+                    </select>
                     <div class="card-content">
                         <button type="submit">Agendar</button>
+                    </div>
+                    <div class="card-footer" id="feedback">
+                        Agendamento efetuado com sucesso!
                     </div>
                 </form>
             </div> 

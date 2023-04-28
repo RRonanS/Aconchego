@@ -47,22 +47,24 @@ create table padrinho(
   constraint fk_profissional_padrinho foreign key(orientador) references profissional (cpf)
 );
 
-create table atendimento(
-	id_atendimento serial primary key,
-  	profissional_cpf bigint not null,
-  	paciente_cpf bigint,
-  	data_atendimento date,
-  	tipo varchar(20),
-  	anotacoes varchar(1000),
-	atendimento_status int,
-	observacoes varchar(100),
-  	constraint fk_profissional_atendimento foreign key(profissional_cpf) references profissional (cpf)
+CREATE TABLE atendimento(
+  id_atendimento serial primary key,
+  profissional_cpf bigint not null,
+  paciente_cpf bigint,
+  data_atendimento date,
+  tipo varchar(20),
+  anotacoes varchar(1000),
+  atendimento_status int,
+  observacoes varchar(100),
+  constraint fk_profissional_atendimento foreign key(profissional_cpf) references profissional (cpf),
+  CONSTRAINT unique_atendimento UNIQUE (profissional_cpf, paciente_cpf, data_atendimento)
 );
+
 
 
 create table usuario_imagem(
 	usuario_cpf bigint not null,
 	imagem bytea,
-	constraint pk_imagem primary key(usuario_cpf),
+	constraint pk_imagem primary key(usuario_cpf), a
 	constraint fk_usuario_imagem foreign key(usuario_cpf) references usuario(cpf)
 );

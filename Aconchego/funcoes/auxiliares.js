@@ -121,7 +121,6 @@ function listar_consultas_html(html, consultas, paciente=true){
         const base64 = buffer.toString('base64');
         dataUri = `data:image/jpeg;base64,${base64}`; 
       }
-      console.log(consulta);
       texto += `
       <form action="/check_consulta" method="get" id="form_consulta">
         <div style="border: 2px solid; max-width: 110px;">
@@ -137,6 +136,61 @@ function listar_consultas_html(html, consultas, paciente=true){
     return html_replace(html, 'div_consultas', texto);
 };
 
+function listar_profissionais_html(html, profissionais){
+    // Lista os profissionais disponiveis na tela de agendamento
+    texto = ``;
+    for(var i=0; i < profissionais.length; i++){
+        var p = profissionais[i];
+        var dataUri = undefined;
+        const buffer = p.imagem;
+        if(buffer != undefined){
+          const base64 = buffer.toString('base64');
+          dataUri = `data:image/jpeg;base64,${base64}`; 
+        }
+        texto += `
+        <div class="content-box">
+          <form action="agendamento" method="get"  id="form_${p.cpf}">
+            <input type="number" name="cpf" value="${p.cpf}" hidden>
+            <a href="javascript:{}" onclick="document.getElementById('form_${p.cpf}').submit();" title="Doutor ${p.nome}">
+              <img src="${dataUri}"  alt="${p.nome}" class="doctor-image" data-doctor="Médico 1" style="width: 100px; height: 100px;">
+              <p id="big-rectangle-text"> Doutor ${p.nome}</p>
+            </a>
+          </form>
+        </div>
+        `;
+    }
+    return html_replace(html, 'profissionais', texto);
+}
+
+function listar_horarios_html(html, lista, cpf){
+    // Coloca no html a lista de horarios do profissional
+    texto = ``;
+    for(var i=0; i < lista.length; i++){
+      var data = lista[i];
+      var hora = data.getHours();
+      if(hora < 10){
+        hora = '0' + hora;
+      }
+      var minuto = data.getMinutes();
+      if(minuto < 10){
+        minuto = '0' + minuto;
+      }
+      var dia = data.getDate();
+      var mes = data.getMonth();
+      if(dia < 10){
+        dia = '0' + dia;
+      }
+      if(mes < 10){
+        mes = '0' + (mes+1);
+      }
+      texto += `
+      <option value="${data}">Dia ${dia}/${mes} às ${hora}:${minuto}</option>
+      `;
+    }
+    html = html_replace_att(html, 'cpf_data', 'value', cpf);
+    return html_replace(html, 'data_atendimento', texto);
+}
+
 module.exports.validar_cpf = validar_cpf;
 module.exports.validar_email = validar_email;
 module.exports.validar_telefone = validar_telefone;
@@ -144,3 +198,5 @@ module.exports.html_replace = html_replace;
 module.exports.html_replace_att = html_replace_att;
 module.exports.listar_pacientes_html = listar_pacientes_html;
 module.exports.listar_consultas_html = listar_consultas_html;
+module.exports.listar_profissionais_html = listar_profissionais_html;
+module.exports.listar_horarios_html = listar_horarios_html;

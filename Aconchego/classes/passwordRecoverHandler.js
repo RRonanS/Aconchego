@@ -64,8 +64,13 @@ class passwordRecoverHandler {
         };
 
         // Envia o email
-        const result = await this.transporter.sendMail(mailOptions);
-        console.log(`Email enviado para ${email}: ${result.response}`);
+        try{
+            const result = await this.transporter.sendMail(mailOptions);
+            console.log(`Email enviado para ${email}: ${result.response}`);   
+        }
+        catch(err){
+            console.log('Erro ao enviar email', err);
+        }
     }
 }
 

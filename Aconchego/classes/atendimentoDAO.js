@@ -15,7 +15,7 @@ class atendimentoDAO{
 
         this.client.connect(function(err) {
         if (err) throw err;
-        console.log("UsuarioDAO conectado ao banco de dados");
+        console.log("AtendimentoDAO conectado ao banco de dados");
         });
     }
     async get_pacientes(cpf){
@@ -60,6 +60,7 @@ class atendimentoDAO{
             join usuario on(cpf = profissional_cpf)
             WHERE paciente_cpf = '${cpf_paciente}' 
             and data_atendimento >= '${data}'`);
+            console.log(result.rows);
             return result.rows;
         } catch (err) {
             console.error(err);
@@ -70,12 +71,10 @@ class atendimentoDAO{
         // Retorna a lista de consultas desse profissional
         try {
           data = data.toISOString();
-          console.log(data);
           const result = await this.client.query(`SELECT * FROM atendimento left join usuario_imagem on(paciente_cpf = usuario_cpf)
-          join usuario on(cpf = paciente_cpf)
+          right join usuario on(cpf = paciente_cpf)
           WHERE profissional_cpf = '${cpf_profissional}' 
-          and data_atendimento = '${data}'`);
-          console.log(result.rows);
+          and data_atendimento >= '${data}'`);
           return result.rows;
         } catch (err) {
           console.error(err);
@@ -146,7 +145,52 @@ class atendimentoDAO{
           throw err;
         }
       }
+
+      async get_profissionais(){
+        // Retorna todos os profissionais
+        const query = await this.client.query(`select * from (usuario u join profissional p on(p.cpf = u.cpf))
+        left join usuario_imagem i on(i.usuario_cpf = u.cpf);
+        `)
+        return query.rows;
+      }
       
+      async datas_diponiveis(cpf_profissional, intervalo, hora_entrada, hora_saida){
+        // Retorna as datas de atendimento disponiveis para tal profissional no intervalo passado
+        const startDate = new Date();
+        const endDate = new Date();
+        endDate.setDate(endDate.getDate() + intervalo);
+        var availableTimes = [];
+
+        // Loop entre as datas
+        while (startDate <= endDate) {
+
+          // Verificando se a data é um dia útil (segunda a sexta-feira)
+          if (startDate.getDay() !== 0 && startDate.getDay() !== 6) {
+            
+            const startHour = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), hora_entrada);
+            const endHour = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), hora_saida);
+            
+            // Loop entre as horas disponíveis no expediente
+            while (startHour < endHour) {
+              availableTimes.push(new Date(startHour)); // adiciona uma cópia da data
+              startHour.setMinutes(startHour.getMinutes() + 60);
+            }
+          }
+          startDate.setDate(startDate.getDate() + 1);
+        }
+        var unAvaliableTimes = await this.client.query(`select data_atendimento from atendimento where profissional_cpf ='${cpf_profissional}'`);
+        unAvaliableTimes = unAvaliableTimes.rows;
+        for(var i=0; i < unAvaliableTimes.length; i++){
+            var data = unAvaliableTimes[i].data_atendimento;
+            for(var j=0; j < availableTimes.length; j++){
+              if(data.getTime() == availableTimes[j].getTime()){
+                availableTimes.splice(j, 1);
+                break;
+              }
+            }
+        }
+        return availableTimes;
+      }
 }
 
 module.exports = atendimentoDAO;

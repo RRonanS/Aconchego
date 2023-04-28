@@ -73,6 +73,15 @@ class usuarioDAO{
         return result[0].nome;
     }
 
+    async get_endereco(cpf){
+        // Retorna o endereco do usuario
+        const result = await this.consultar_dados(cpf);
+        if(result.lenght == 0){
+            return undefined
+        }
+        return result[0].endereco;
+    }
+
     async set_imagem(cpf, img){
         // Seta a imagem de perfil do usuario
         var old_image = await this.get_imagem(cpf);
@@ -96,7 +105,13 @@ class usuarioDAO{
             return;
         }
         const result = await this.client.query(`select i.imagem from usuario_imagem i where i.usuario_cpf = '${cpf}'`);
-        return result.rows[0];
+        if(result.rows.length == 0){
+            return undefined
+        }
+        if(!result.rows[0].hasOwnProperty('imagem')){
+            return undefined
+        }
+        return result.rows[0].imagem;
     }
 
     async cadastrar(cpf, senha, nome, foto, end, email){
