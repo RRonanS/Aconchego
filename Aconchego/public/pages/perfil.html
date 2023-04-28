@@ -16,7 +16,7 @@
             <div class="paginas">
                 <ul class="paginas-alinhadas">
                     <li>
-                        <form action="http://localhost:8080/perfil" method="get" id="form_perfil">
+                        <form action="http://localhost:8080/peril" method="get" id="form_perfil">
                             <a href="javascript:{}" onclick="document.getElementById('form_perfil').submit();">
                                 <img src="\images\perfil.png">    Perfil
                             </a>
@@ -36,14 +36,14 @@
                             </a>
                         </form>
                     </li>
-                    <li id="opcao_pacientes">
+                    <li>
                         <form action="http://localhost:8080/pacientes" method="get" id="form_pacientes">
                             <a href="javascript:{}" onclick="document.getElementById('form_pacientes').submit();">
                                 <img src="\images\paciente.png">    Pacientes
                             </a>
                         </form>
                     </li>
-                    <li id="opcao_gerenciamento">
+                    <li>
                         <form action="http://localhost:8080/gerenciamento" method="get" id="form_gerenciamentp">
                             <a href="javascript:{}" onclick="document.getElementById('form_gerenciamento').submit();">
                                 <img src="\images\gerenciamento.png">    Gerenciamento
@@ -67,23 +67,26 @@
                         <h1>Perfil</h1>
                     </div>
 
-                    <div class="card-content-area" style="justify-content: center;">
-                        <div id="foto" class="foto" style="justify-content: center;">
+                    <div class="card-content">
+                        <div class="card-content-area">
                             <img src="/images/perfil_resized.png" alt="Minha Foto de Perfil">
                         </div>
                         <form action="http://localhost:8080/perfil" method="post">
                         
+                            <div class="card-content-area">
+                                <input type="text" id="nome" placeholder="Nome" name="nome">
+                            </div>
                             
-                            <input type="text" id="nome" placeholder="Nome" name="nome"><br>
-
+                            <div class="card-content-area">
+                                <input type="password" id="senha" placeholder="Senha" name="senha">
+                            </div>
                             
-                            <input type="password" id="senha" placeholder="Senha" name="senha"><br>
-
-                            
-                            <input type="text" id="endereco" placeholder="Endereço" name="endereco"><br>
+                            <div class="card-content-area">
+                                <input type="text" id="endereco" placeholder="Endereço" name="endereco">
+                            </div>
 
                         </form>
-                    </div>
+                    
                         <div class="card-footer">
                             <form action="http://localhost:8080/salvar" method="get" id="form_salvar">
                                 <button type="submit" class="submit">Salvar</button> 
@@ -96,7 +99,8 @@
                                 <button type="submit" class="submit">Apagar conta</button> 
                             </form>
                         </div>
-            
+
+                    </div>
                         
                     
                 </div>
