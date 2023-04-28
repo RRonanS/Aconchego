@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/styles/painel.css">
+    <link rel="stylesheet" href="styles/painel.css">
 </head>
 <body>
     <div class="container">
@@ -83,14 +83,16 @@
             </div> 
 
             <div id="popup-agendar">
+                
                 <form>
-                  <h2>Agendar consulta</h2>
+                  <h2>Consulta </h2>
                   <br>
                   <!-- Adicione os campos do formulário aqui -->
                   <button type="submit">Entrar na consulta</button>
-                  <button type="button" id="btn-cancelar">Cancelar</button>
+                  <button type="button" id="btn-cancelar">Cancelar consulta</button>
                 </form>
             </div> 
+            
         </main>
     </div>
 
@@ -106,6 +108,39 @@
         btnCancelar.addEventListener('click', function() {
           popupAgendar.style.display = 'none';
         });
+
+        var btnCancel = document.getElementById("btn-cancelar");
+  
+        btnCancel.addEventListener("click", function() {
+        var confirmCancel = confirm("Tem certeza que deseja cancelar a consulta?");
+        
+        if (confirmCancel) {
+        // Insira aqui o código que você deseja executar ao cancelar a consulta
+        console.log("Consulta cancelada!");
+        }
+         });
+
+          // Seleciona o elemento que envolve o popup
+        var popup = document.getElementById('popup-agendar');
+
+        // Adiciona um evento de clique a esse elemento
+        popup.addEventListener('click', function(event) {
+        // Verifica se o clique foi fora do popup
+        if (event.target == popup) {
+            // Fecha o popup
+            popup.style.display = 'none';
+        }
+        });
+
+        // Adiciona um evento de clique ao botão "Cancelar consulta"
+        var btnCancelar2 = document.getElementById('btn-cancelar');
+        btnCancelar.addEventListener('click', function() {
+        // Fecha o popup
+        popup.style.display = 'none';
+        });
+
+
+        
       </script>
 
 </body>
