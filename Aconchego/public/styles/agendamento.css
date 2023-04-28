@@ -274,6 +274,20 @@ body {
 
 }
 
+.card-content button {
+
+    text-align: center;
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    font-size: 100%;
+    border-radius: 10px;
+    background-color: #0EB9F9;
+    
+
+
+}
+
 .card-footer {
 
     display: flex;
