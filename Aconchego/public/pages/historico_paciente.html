@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Histórico de Paciente</title>
+	<link rel="stylesheet" href="historico_paciente.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="header">
+                ACONCHEGO
+            </div>
+            <div class="paginas">
+            <ul class="paginas-alinhadas">
+                <li>
+                    <form action="http://localhost:8080/perfil" method="get" id="form_perfil">
+                        <a href="javascript:{}" onclick="document.getElementById('form_perfil').submit();">
+                            <img src="\images\perfil.png">    Perfil
+                        </a>
+                    </form>
+                </li>
+                <li>
+                    <form action="http://localhost:8080/menu" method="get" id="form_painel">
+                        <a href="javascript:{}" onclick="document.getElementById('form_painel').submit();">
+                            <img src="\images\home.png">    Painel
+                        </a>
+                    </form>
+                </li>
+                <li>
+                    <form action="http://localhost:8080/agendamento" method="get" id="form_agendamento">
+                        <a href="javascript:{}" onclick="document.getElementById('form_agendamento').submit();">
+                            <img src="\images\agenda.png">    Agendamento
+                        </a>
+                    </form>
+                </li>
+                <li id="opcao_pacientes">
+                    <form action="http://localhost:8080/pacientes" method="get" id="form_pacientes">
+                        <a href="javascript:{}" onclick="document.getElementById('form_pacientes').submit();">
+                            <img src="\images\paciente.png">    Pacientes
+                        </a>
+                    </form>
+                </li>
+                <li id="opcao_gerenciamento">
+                    <form action="http://localhost:8080/gerenciamento" method="get" id="form_gerenciamentp">
+                        <a href="javascript:{}" onclick="document.getElementById('form_gerenciamento').submit();">
+                            <img src="\images\gerenciamento.png">    Gerenciamento
+                        </a>
+                    </form>
+                </li>
+                <li>
+                    <form action="http://localhost:8080/logout" method="get" id="form_sair">
+                        <a href="javascript:{}" onclick="document.getElementById('form_sair').submit();">    Sair</a>
+                    </form>
+                </li>
+            </ul>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="small-rectangle">
+                <h1>Histórico de Paciente</h1>
+            </div>
+
+            <div class="big-square">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Profissional</th>
+                            <th>Anotações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>01/01/2022</td>
+                            <td>Dr. João</td>
+                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis tellus eget felis dignissim malesuada non non lorem.</td>
+                        </tr>
+                        <tr>
+                            <td>05/02/2022</td>
+                            <td>Dra. Maria</td>
+                            <td>Donec euismod, lectus vitae consectetur sagittis, nulla elit facilisis sapien, vel bibendum nibh sem non nibh. </td>
+                        </tr>
+                        <tr>
+                            <td>10/03/2022</td>
+                            <td>Dr. Carlos</td>
+                            <td>Phasellus in odio in sapien gravida egestas. Fusce convallis eu nulla sed venenatis. </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div
+        </div>
+	</div>
+</body>
+</html>
