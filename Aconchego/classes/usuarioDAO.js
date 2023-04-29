@@ -31,7 +31,6 @@ class usuarioDAO{
     async consultar_dados(cpf){
         // Retorna os dados gerais do usuario
         const result = await this.client.query(`SELECT * FROM usuario WHERE cpf = ${cpf}`);
-        console.log(result.rows);
         return result.rows;
     }
 
@@ -112,6 +111,24 @@ class usuarioDAO{
             return undefined
         }
         return result.rows[0].imagem;
+    }
+
+    async set_endereco(cpf, novo_end){
+        // Seta novo endereco para o usuario
+        const resp = await this.client.query(`update usuario set endereco = '${novo_end}' where cpf = '${cpf}';`);
+        return resp;
+    }
+
+    async set_nome(cpf, novo_nome){
+        // Seta novo nome para o usuario
+        const resp = await this.client.query(`update usuario set nome = '${novo_nome}' where cpf = '${cpf}';`);
+        return resp;
+    }
+
+    async set_senha(cpf, nova_senha){
+        // Seta nova senha para o usuario
+        const resp = await this.client.query(`update usuario set senha = '${nova_senha}' where cpf = '${cpf}';`);
+        return resp;
     }
 
     async cadastrar(cpf, senha, nome, foto, end, email){

@@ -60,7 +60,6 @@ class atendimentoDAO{
             join usuario on(cpf = profissional_cpf)
             WHERE paciente_cpf = '${cpf_paciente}' 
             and data_atendimento >= '${data}'`);
-            console.log(result.rows);
             return result.rows;
         } catch (err) {
             console.error(err);
@@ -132,6 +131,14 @@ class atendimentoDAO{
             throw new Error(`Erro ao buscar o status do atendimento com id ${id_atendimento}: ${error.message}`);
         }
     }
+
+    async get_consulta(id){
+        // Retorna a consulta dado o id
+        const resp = await this.client.query(`
+        select * from atendimento where id_atendimento = '${id}';   
+        `);
+        return resp.rows[0];
+    }
     
     async set_status(id_atendimento, status) {
         // Seta o status do atendimento(Escolha inteiros para representar os possiveis estados) 
@@ -156,6 +163,7 @@ class atendimentoDAO{
       
       async datas_diponiveis(cpf_profissional, intervalo, hora_entrada, hora_saida){
         // Retorna as datas de atendimento disponiveis para tal profissional no intervalo passado
+        const hoje = new Date();
         const startDate = new Date();
         const endDate = new Date();
         endDate.setDate(endDate.getDate() + intervalo);
@@ -171,7 +179,7 @@ class atendimentoDAO{
             const endHour = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), hora_saida);
             
             // Loop entre as horas disponíveis no expediente
-            while (startHour < endHour) {
+            while (startHour < endHour && (startHour.getTime() >= hoje.getTime()) ) {
               availableTimes.push(new Date(startHour)); // adiciona uma cópia da data
               startHour.setMinutes(startHour.getMinutes() + 60);
             }

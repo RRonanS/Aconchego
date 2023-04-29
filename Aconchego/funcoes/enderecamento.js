@@ -9,8 +9,13 @@ function set_endereco(pagina, end){
 
     $('form').each(function(){
         const action = $(this).attr('action');
-        const newAction = action.replace('localhost:8080', end);
-        $(this).attr('action' ,newAction);
+        try{
+            const newAction = action.replace('localhost:8080', end);
+            $(this).attr('action' ,newAction);
+        }
+        catch(err){
+            console.log('formulario sem action', err);
+        }
     });
     return $.html();
 };

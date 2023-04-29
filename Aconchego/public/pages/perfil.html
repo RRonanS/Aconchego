@@ -16,7 +16,7 @@
             <div class="paginas">
                 <ul class="paginas-alinhadas">
                     <li>
-                        <form action="http://localhost:8080/peril" method="get" id="form_perfil">
+                        <form action="http://localhost:8080/perfil" method="get" id="form_perfil">
                             <a href="javascript:{}" onclick="document.getElementById('form_perfil').submit();">
                                 <img src="\images\perfil.png">    Perfil
                             </a>
@@ -36,14 +36,14 @@
                             </a>
                         </form>
                     </li>
-                    <li>
+                    <li id="opcao_pacientes">
                         <form action="http://localhost:8080/pacientes" method="get" id="form_pacientes">
                             <a href="javascript:{}" onclick="document.getElementById('form_pacientes').submit();">
                                 <img src="\images\paciente.png">    Pacientes
                             </a>
                         </form>
                     </li>
-                    <li>
+                    <li id="opcao_gerenciamento">
                         <form action="http://localhost:8080/gerenciamento" method="get" id="form_gerenciamentp">
                             <a href="javascript:{}" onclick="document.getElementById('form_gerenciamento').submit();">
                                 <img src="\images\gerenciamento.png">    Gerenciamento
@@ -68,30 +68,26 @@
                     </div>
 
                     <div class="card-content">
-                        <div class="card-content-area">
+                        <div class="card-content-area" id="foto">
                             <img src="/images/perfil_resized.png" alt="Minha Foto de Perfil">
                         </div>
-                        <form action="http://localhost:8080/perfil" method="post">
-                        
-                            <div class="card-content-area">
-                                <input type="text" id="nome" placeholder="Nome" name="nome">
-                            </div>
-                            
-                            <div class="card-content-area">
-                                <input type="password" id="senha" placeholder="Senha" name="senha">
-                            </div>
-                            
-                            <div class="card-content-area">
-                                <input type="text" id="endereco" placeholder="Endereço" name="endereco">
-                            </div>
-
+                        <form action="http://localhost:8080/salvar-perfil" method="get">
+                                <input type="text" id="cpf" name="cpf" hidden>
+                                <div class="card-content-area">
+                                    <input type="text" id="nome" placeholder="Nome" name="nome">
+                                </div>
+                                
+                                <div class="card-content-area">
+                                    <input type="password" id="senha" placeholder="Senha" name="senha">
+                                </div>
+                                
+                                <div class="card-content-area">
+                                    <input type="text" id="endereco" placeholder="Endereço" name="endereco">
+                                </div>
+                                <div class="card-footer">
+                                        <button type="submit" class="submit">Salvar</button> 
+                                </div>
                         </form>
-                    
-                        <div class="card-footer">
-                            <form action="http://localhost:8080/salvar" method="get" id="form_salvar">
-                                <button type="submit" class="submit">Salvar</button> 
-                            </form>
-                        </div>
         
                         
                         <div class="card-footer">

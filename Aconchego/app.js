@@ -9,6 +9,7 @@ const registro_end = __dirname+'/public/pages/registro.html';
 const embreve_end = __dirname+'/public/pages/tela_provisoria.html';
 const agendamento_end = __dirname+'/public/pages/agendamento.html';
 const perfil_end = __dirname+'/public/pages/perfil.html';
+const check_consulta = __dirname+'/public/pages/check_consulta.html';
 
 // Modulos proprios
 var usuarioDAO = require('./classes/usuarioDAO');
@@ -45,6 +46,7 @@ var resetarsenha_html = set_endereco(resetarsenha_end, endereco);
 var registro_html = set_endereco(registro_end, endereco);
 var agendamento_html = set_endereco(agendamento_end, endereco);
 var perfil_html = set_endereco(perfil_end, endereco);
+var check_consulta_html = set_endereco(check_consulta, endereco);
 
 // Inicializacao do app
 const oneDay = 1000 * 60 * 60 * 24;
@@ -429,8 +431,46 @@ app.get('/perfil', async function(req, res){
             resp = html_replace(resp, 'foto', `<img src='${dataUri}' alt='Imagem do perfil' style="width: 100px; height: 100px;">`)
             resp = html_replace_att(resp, 'nome', 'value', await usuario.get_nome(cpf));
             resp = html_replace_att(resp, 'endereco', 'value', await usuario.get_endereco(cpf));
+            resp = html_replace_att(resp, 'cpf', 'value', cpf);
             res.send(resp);
         }
+    }
+
+});
+
+app.get('/salvar-perfil', async function(req, res){
+    // Salva as mudanças no perfil do usuario
+    const endereco = req.query.endereco;
+    const cpf_usuario = req.query.cpf;
+    const senha = req.query.senha;
+    const nome = req.query.nome;
+    var session_id = req.session.sessao;
+    if(session_id != undefined){
+        // Validar que o usuario está logado e o perfil a alterar corresponde a seu perfil
+        var cpf = sh.validarSessao(session_id);
+        if(cpf != -1){
+            if(cpf == cpf_usuario){
+                // Mudanca valida
+                if(endereco != undefined){
+                    await usuario.set_endereco(cpf, endereco);
+                }
+                if(nome != undefined && nome.length >= 3){
+                    await usuario.set_nome(cpf, nome);
+                }
+                if(senha != undefined && senha.length >= 6){
+                    await usuario.set_senha(cpf, senha);
+                }
+                res.redirect('/perfil');
+            }
+        }
+        else{
+            // Sessao invalidada
+            req.session.sessao.destroy();
+            res.redirect('/login');
+        }
+    }
+    else{
+        res.redirect('/login');
     }
 
 });
@@ -482,6 +522,82 @@ app.post('/redefinirsenha', async function(req, res){
 
 });
 
+app.get('/check_consulta', async function(req, res){
+    var id = req.session.sessao;
+    const id_antedimento = req.query.id_consulta;
+    const is_paciente = req.query.is_paciente.toLowerCase() === "true";
+    // Verifica se o usuario já está autenticado
+    if(id == undefined){
+        res.redirect('/login');
+    }
+    else{
+        var cpf = sh.validarSessao(id);
+        if(cpf == -1){
+            req.session.destroy();
+            res.redirect('/login')
+        }
+        else{
+            // Logado
+            if(id_antedimento != undefined){
+                // Repoe os campos do html e o envia para o cliente
+                var resp = check_consulta_html;
+                var consulta = await atendimento.get_consulta(id_antedimento);
+                if(is_paciente){
+                    var nome = await usuario.get_nome(consulta.profissional_cpf);
+                    var foto = await usuario.get_imagem(consulta.profissional_cpf);
+                    resp = html_replace(resp, 'nome', `Consulta com doutor ${nome}`);
+                }
+                else{
+                    var nome = await usuario.get_nome(consulta.paciente_cpf);
+                    var foto = await usuario.get_imagem(consulta.paciente_cpf);
+                    resp = html_replace(resp, 'nome', `Consulta com paciente ${nome}`);
+                }
+                var buffer = foto;
+                var dataUri = undefined;
+                if(buffer != undefined){
+                  const base64 = buffer.toString('base64');
+                  dataUri = `data:image/jpeg;base64,${base64}`; 
+                }
+                resp = html_replace(resp, 'foto', `<img src='${dataUri}' alt='Imagem da consulta' style="width: 100px; height: 100px;">`);
+                var hora = consulta.data_atendimento.getHours();
+                if(hora < 10){
+                  hora = '0' + hora;
+                }
+                var minuto = consulta.data_atendimento.getMinutes();
+                if(minuto < 10){
+                  minuto = '0' + minuto;
+                }
+                var dia = consulta.data_atendimento.getDate();
+                var mes = consulta.data_atendimento.getMonth();
+                if(dia < 10){
+                  dia = '0' + dia;
+                }
+                if(mes < 10){
+                  mes = '0' + (mes+1);
+                }
+                var dia_consulta =`${dia}/${mes}`;
+                const atual = new Date();
+                if(consulta.data_atendimento.getDate() == atual.getDate() && consulta.data_atendimento.getMonth() == atual.getMonth()){
+                  dia_consulta = 'Hoje';
+                }
+                resp = html_replace(resp, 'data', `${dia_consulta} as ${hora} horas`); 
+                // Esconde as opcoes dado o perfil
+                const perfil = await usuario.get_perfil(cpf);
+                if(perfil != 'administrador'){
+                    resp = html_replace_att(resp, 'opcao_gerenciamento', 'hidden', true);
+                }
+                if(perfil != 'profissional'){
+                    resp = html_replace_att(resp, 'opcao_pacientes', 'hidden', true);
+                }
+                res.send(resp);
+            }
+            else{
+                res.redirect('/menu');
+            }
+        }
+    }
+})
+
 
 // Release 1:
 //  Realizar sistema de cadastro e de login,
@@ -499,7 +615,4 @@ app.get('/psicologos', function(req, res){
 });
 app.get('/meditacao', function(req, res){
     res.sendFile(embreve_end);
-});
-app.get('/perfil', function(req, res){
-
 });

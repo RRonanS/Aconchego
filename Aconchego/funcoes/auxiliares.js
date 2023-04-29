@@ -89,10 +89,13 @@ function listar_consultas_html(html, consultas, paciente=true){
     }
     for(var i=0; i < consultas.length; i++){
       var consulta = consultas[i];
+      var id_consulta = consulta.id_atendimento;
       var atual = new Date();
       var nome = consulta.nome;
+      var is_paciente = false;
       if(paciente){
         nome = 'Doutor ' + nome;
+        is_paciente = true;
       }
       var hora = consulta.data_atendimento.getHours();
       if(hora < 10){
@@ -122,15 +125,17 @@ function listar_consultas_html(html, consultas, paciente=true){
         dataUri = `data:image/jpeg;base64,${base64}`; 
       }
       texto += `
-      <form action="/check_consulta" method="get" id="form_consulta">
-        <div style="border: 2px solid; max-width: 110px;">
-          <a href="javascript:{}" onclick="document.getElementById('form_consulta').submit();">
-            <img src="${dataUri}" width="100" height="100">
-            <p>${nome}</p>
-            <p>${dia_consulta} às ${hora}</p>
-          </a>
+        <div class="content-box">
+          <form action="/check_consulta" method="get" id="form_consulta">
+            <input name="id_consulta" id="id_consulta" value="${id_consulta}" hidden>
+            <input name="is_paciente" id="is_paciente" value="${is_paciente}" hidden>
+            <a href="javascript:{}" onclick="document.getElementById('form_consulta').submit();">
+              <img src="${dataUri}" width="100" height="100" class="doctor-image" style="width: 150; height: 150;">
+              <p class="big-rectangle-text"> ${nome}</p>
+              <p>${dia_consulta} às ${hora}</p>
+            </a>
+          </form>
         </div>
-      </form>
       `;
     }
     return html_replace(html, 'div_consultas', texto);
