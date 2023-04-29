@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+.sidebar {
+    flex: 1;
+    background-color: #24306E;
+    color: #fff;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 20px;
+}
+
+.sidebar ul li {
+    margin-bottom: 20px;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.main-content {
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #F5F5F5;
+}
+
+.big-rectangle {
+    background-color: #fff;
+    width: 80%;
+    height: 40%;
+    border-radius: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+}
+
+.big-rectangle h2{
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-right: 70%;
+    margin-top: 3%;
+}
+
+.small-rectangle {
+    background-color: #fff;
+    height: 25%;
+    width: 380px;
+    border-radius: 20px;
+    margin-right: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+}
+
+.small-rectangle h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-right: 70%;
+    margin-top: 5%;
+    
+}
+
+.small-rectangle p {
+    font-size: 18px;
+}
+
+.small-rectangle2 {
+    position: absolute;
+    background-color: #fff;
+    height: 25%;
+    width: 380px;
+    border-radius: 20px;
+    margin-left: 35%;
+    margin-top: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+}
+
+.small-rectangle2 h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-right: 60%;
+    margin-top: 5%;
+    
+}
+
+.small-rectangle2 p {
+    font-size: 18px;
+}
+
+.small-rectangle:last-child {
+    margin-right: 0;
+}
+
+.header{
+
+    margin-top: 50%;
+    text-align: center;
+    padding-bottom: 50px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    font-size: 205%;
+    
+}
+
+.paginas{
+    text-align: center;
+}
+
+.content-box {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    height: 60%;
+    box-sizing: border-box;
+  }
+  
+.content-box  img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  margin-left: 0%;
+  margin-top: 20%;
+}
+
+
+.content-box p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 0;
+  flex-grow: 1;
+}
+
+.content-box a {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #333;
+    margin-left: -110%;
+    margin-top: 0%;
+}
+
+.content-box button {
+    background-color: #24306E;
+	color: white;
+	padding: 10px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+/* pop up
+
+/* Estilos para o botão de agendar */
+#btn-agendar {
+    
+    color: #fff;
+    border: none;
+    
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  /* Estilos para o contêiner de pop-up */
+  #popup-agendar {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+  }
+
+  /* Estilos para o formulário no pop-up */
+  #popup-agendar form {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Estilos para os botões no pop-up */
+  #popup-agendar button {
+    background-color:green;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  #popup-agendar button:last-child {
+    margin-right: 0;
+  }
+
+  
+  #popup-agendar button:last-child {
+    margin-right: 0;
+  }
+  
+  /* Estilo para o botão Cancelar no pop-up */
+  #popup-agendar button#btn-cancelar {
+    background-color: red;
+  }
+
