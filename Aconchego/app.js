@@ -606,7 +606,7 @@ app.get('/check_consulta', async function(req, res){
                         resp = html_replace(resp, 'nome', `Consulta com paciente ${nome}`);
                     }
                     var buffer = foto;
-                    var dataUri = undefined;
+                    var dataUri = defaultUserImage;
                     if(buffer != undefined){
                       const base64 = buffer.toString('base64');
                       dataUri = `data:image/jpeg;base64,${base64}`; 
