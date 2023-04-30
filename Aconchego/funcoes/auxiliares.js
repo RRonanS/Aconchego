@@ -1,5 +1,7 @@
 const cheerio = require('cheerio');
 
+const undefinedUserImage = '/images/user_resized.png';
+
 function validar_cpf(cpf) {
   cpf = cpf.replace(/[^\d]+/g,'');
   if (cpf.length !== 11) return false;
@@ -127,6 +129,9 @@ function listar_consultas_html(html, consultas, paciente=true){
         const base64 = buffer.toString('base64');
         dataUri = `data:image/jpeg;base64,${base64}`; 
       }
+      if(dataUri == undefined){
+        dataUri = undefinedUserImage;
+      }
       texto += `
         <div class="content-box">
           <form action="/check_consulta" method="get" id="form_consulta">
@@ -135,7 +140,7 @@ function listar_consultas_html(html, consultas, paciente=true){
             <a href="javascript:{}" onclick="document.getElementById('form_consulta').submit();">
               <img src="${dataUri}" width="100" height="100" style="width: 100; height: 100;">
               <p> ${nome}</p>
-              <p>${dia_consulta} às ${hora}</p>
+              <p>${dia_consulta} as ${hora}:${minuto}</p>
             </a>
           </form>
         </div>
@@ -160,7 +165,7 @@ function listar_profissionais_html(html, profissionais){
           <form action="agendamento" method="get"  id="form_${p.cpf}">
             <input type="number" name="cpf" value="${p.cpf}" hidden>
             <a href="javascript:{}" onclick="document.getElementById('form_${p.cpf}').submit();" title="Doutor ${p.nome}">
-              <img src="${dataUri}"  alt="${p.nome}" class="doctor-image" data-doctor="Médico 1" style="width: 100px; height: 100px;">
+              <img src="${dataUri}"  alt="${p.nome}" style="width: 100px; height: 100px;">
               <p id="big-rectangle-text"> Doutor ${p.nome}</p>
             </a>
           </form>
