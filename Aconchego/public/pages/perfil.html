@@ -71,7 +71,7 @@
                         <div class="card-content-area" id="foto">
                             <img src="/images/perfil_resized.png" alt="Minha Foto de Perfil">
                         </div>
-                        <form action="http://localhost:8080/salvar-perfil" method="get">
+                        <form action="http://localhost:8080/salvar-perfil" method="post" enctype="multipart/form-data">
                                 <input type="text" id="cpf" name="cpf" hidden>
                                 <div class="card-content-area">
                                     <input type="text" id="nome" placeholder="Nome" name="nome">
@@ -83,6 +83,10 @@
                                 
                                 <div class="card-content-area">
                                     <input type="text" id="endereco" placeholder="Endereço" name="endereco">
+                                </div>
+                                <div class="card-content-area">
+                                    <label for="nova_foto">Nova foto</label>
+                                    <input type="file" id="nova_foto" autocomplete="off" placeholder="foto" name="nova_foto">
                                 </div>
                                 <div class="card-footer">
                                         <button type="submit" class="submit">Salvar</button> 
