@@ -68,18 +68,15 @@ function listar_pacientes_html(html, pacientes){
       var paciente = pacientes[i];
       const buffer = paciente.imagem;
       var dataUri = undefinedUserImage;
-      try{
+      if(buffer != undefined && buffer != null){
         const base64 = buffer.toString('base64');
         dataUri = `data:image/jpeg;base64,${base64}`; 
       }
-      catch(err){
-        dataUri = undefinedUserImage;
-      }
       texto += `
         <div style="padding: 10px;">
-          <form action="/paciente" method="get" id="form_paciente">
+          <form action="/paciente" method="get" id="form_paciente_${paciente.cpf}">
             <input type="hidden" name="cpf" value="${paciente.cpf}">
-            <a href="javascript:{}" onclick="document.getElementById('form_paciente').submit();">
+            <a href="javascript:{}" onclick="document.getElementById('form_paciente_${paciente.cpf}').submit();">
               <img src="${dataUri}" alt="${paciente.nome}" width="150" height="150">
               <p>
               ${paciente.nome}
