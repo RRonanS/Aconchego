@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles/painel.css">
+    <link rel="stylesheet" href="painel.css">
 </head>
 <body>
     <div class="container">
@@ -59,10 +59,15 @@
         </div>
 
         <main class="main-content">
-            <div class="big-rectangle">
+            <div class="big-square">
                 <h2 id="h_consultas">Próximas consultas</h2>
                 <div id="div_consultas" style="display: flex; gap: 5px;" >
                     <div class="content-box">
+                        <a href="#" >
+                          <img src="relampago.png"  alt="Médico 1" class="doctor-image" data-doctor="Médico 1" id="btn-agendar">
+                          <p id="big-rectangle-text"> relampago katchau</p>
+                          <p id="big-rectangle-text"> 10/05</p>
+                        </a>
                     </div>
                 </div>  
                         
@@ -78,66 +83,13 @@
                 <p>Alguma informação aqui.</p>
             </div> 
 
-            <div id="popup-agendar">
-                
-                <form action="http://localhost:8080/consulta">
-                  <h2>Consulta </h2>
-                  <br>
-                  <!-- Adicione os campos do formulário aqui -->
-                  <button type="submit">Entrar na consulta</button>
-                  <button type="button" id="btn-cancelar">Cancelar consulta</button>
-                </form>
-            </div> 
+           
             
         </main>
     </div>
 
-    <script>
-        const btnAgendar = document.querySelector('#btn-agendar');
-        const popupAgendar = document.querySelector('#popup-agendar');
-        const btnCancelar = document.querySelector('#btn-cancelar');
-    
-        btnAgendar.addEventListener('click', function() {
-          popupAgendar.style.display = 'block';
-        });
-    
-        btnCancelar.addEventListener('click', function() {
-          popupAgendar.style.display = 'none';
-        });
-
-        var btnCancel = document.getElementById("btn-cancelar");
   
-        btnCancel.addEventListener("click", function() {
-        var confirmCancel = confirm("Tem certeza que deseja cancelar a consulta?");
-        
-        if (confirmCancel) {
-        // Insira aqui o código que você deseja executar ao cancelar a consulta
-        console.log("Consulta cancelada!");
-        }
-         });
-
-          // Seleciona o elemento que envolve o popup
-        var popup = document.getElementById('popup-agendar');
-
-        // Adiciona um evento de clique a esse elemento
-        popup.addEventListener('click', function(event) {
-        // Verifica se o clique foi fora do popup
-        if (event.target == popup) {
-            // Fecha o popup
-            popup.style.display = 'none';
-        }
-        });
-
-        // Adiciona um evento de clique ao botão "Cancelar consulta"
-        var btnCancelar2 = document.getElementById('btn-cancelar');
-        btnCancelar.addEventListener('click', function() {
-        // Fecha o popup
-        popup.style.display = 'none';
-        });
-
-
-        
-      </script>
+      
 
 </body>
 </html>
