@@ -81,16 +81,17 @@ class usuarioDAO{
         return result[0].endereco;
     }
 
-    async set_imagem(cpf, img){
+    async set_imagem(cpf, img, cadastro=false){
         // Seta a imagem de perfil do usuario
-        var old_image = await this.get_imagem(cpf);
-        if(old_image != undefined){
+        if(!cadastro){
+            console.log('update img');
             const query = 'UPDATE usuario_imagem set imagem = $1 where usuario_cpf = $2';
             const values = [img, cpf];
             const result = await this.client.query(query, values);
             return result;
         }
         else{
+            console.log('new img');
             const query = 'INSERT INTO usuario_imagem (usuario_cpf, imagem) VALUES ($1, $2)';
             const values = [cpf, img];
             const result = await this.client.query(query, values);
@@ -105,10 +106,13 @@ class usuarioDAO{
         }
         const result = await this.client.query(`select i.imagem from usuario_imagem i where i.usuario_cpf = '${cpf}'`);
         if(result.rows.length == 0){
-            return undefined
+            return undefined;
         }
         if(!result.rows[0].hasOwnProperty('imagem')){
-            return undefined
+            return undefined;
+        }
+        else if(result.rows[0].imagem === null){
+            return undefined;
         }
         return result.rows[0].imagem;
     }
@@ -138,7 +142,7 @@ class usuarioDAO{
         if(check.length == 0){
             const ad = await this.client.query(`insert into usuario values('${cpf}', '${nome}', '${email}', '${senha}', 
             '${end}', '${telefone}')`);
-            const ad2 = await this.set_imagem(cpf, foto);
+            const ad2 = await this.set_imagem(cpf, foto, true);
             return true;
         }
         return false;

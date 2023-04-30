@@ -12,6 +12,9 @@ const perfil_end = __dirname+'/public/pages/perfil.html';
 const check_consulta = __dirname+'/public/pages/check_consulta.html';
 const his_paciente = __dirname+'/public/pages/historico_paciente.html'
 
+// Outros paths
+const defaultUserImage = '/images/user_resized.png';
+
 // Modulos proprios
 var usuarioDAO = require('./classes/usuarioDAO');
 var atendimentoDAO = require('./classes/atendimentoDAO');
@@ -453,7 +456,10 @@ app.get('/perfil', async function(req, res){
             if(perfil != 'profissional'){
                 resp = html_replace_att(resp, 'opcao_pacientes', 'hidden', true);
             }
-            resp = html_replace(resp, 'foto', `<img src='${dataUri}' alt='Imagem do perfil' style="width: 100px; height: 100px;">`)
+            if(dataUri == undefined){
+                dataUri = defaultUserImage;
+            }
+            resp = html_replace(resp, 'foto', `<img src='${dataUri}'>`)
             resp = html_replace_att(resp, 'nome', 'value', await usuario.get_nome(cpf));
             resp = html_replace_att(resp, 'endereco', 'value', await usuario.get_endereco(cpf));
             resp = html_replace_att(resp, 'cpf', 'value', cpf);
@@ -463,12 +469,18 @@ app.get('/perfil', async function(req, res){
 
 });
 
-app.get('/salvar-perfil', async function(req, res){
+app.post('/salvar-perfil', upload.single('nova_foto'), async function(req, res){
     // Salva as mudanças no perfil do usuario
-    const endereco = req.query.endereco;
-    const cpf_usuario = req.query.cpf;
-    const senha = req.query.senha;
-    const nome = req.query.nome;
+    const endereco = req.body.endereco;
+    const cpf_usuario = req.body.cpf;
+    const senha = req.body.senha;
+    const nome = req.body.nome;
+    if(!req.file){
+        var foto = undefined;
+    }
+    else{
+        var foto = req.file.buffer;
+    }
     var session_id = req.session.sessao;
     if(session_id != undefined){
         // Validar que o usuario está logado e o perfil a alterar corresponde a seu perfil
@@ -484,6 +496,9 @@ app.get('/salvar-perfil', async function(req, res){
                 }
                 if(senha != undefined && senha.length >= 6){
                     await usuario.set_senha(cpf, senha);
+                }
+                if(foto != undefined){
+                    await usuario.set_imagem(cpf, foto);
                 }
                 res.redirect('/perfil');
             }
