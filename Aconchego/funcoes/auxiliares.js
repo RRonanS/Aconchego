@@ -67,8 +67,14 @@ function listar_pacientes_html(html, pacientes){
     for(let i in pacientes){
       var paciente = pacientes[i];
       const buffer = paciente.imagem;
-      const base64 = buffer.toString('base64');
-      const dataUri = `data:image/jpeg;base64,${base64}`; 
+      var dataUri = undefinedUserImage;
+      try{
+        const base64 = buffer.toString('base64');
+        dataUri = `data:image/jpeg;base64,${base64}`; 
+      }
+      catch(err){
+        dataUri = undefinedUserImage;
+      }
       texto += `
         <div style="padding: 10px;">
           <form action="/paciente" method="get" id="form_paciente">
