@@ -56,6 +56,7 @@ CREATE TABLE atendimento(
   anotacoes varchar(1000),
   atendimento_status int,
   observacoes varchar(100),
+  status_atendimento varchar(30),
   constraint fk_profissional_atendimento foreign key(profissional_cpf) references profissional (cpf),
   CONSTRAINT unique_atendimento UNIQUE (profissional_cpf, paciente_cpf, data_atendimento)
 );

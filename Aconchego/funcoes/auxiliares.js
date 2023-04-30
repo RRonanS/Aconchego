@@ -1,29 +1,32 @@
 const cheerio = require('cheerio');
 
 function validar_cpf(cpf) {
-  return true;
-  cpf = cpf.replace(/[^\d]+/g, ''); // Remove tudo que não for dígito
-  if (cpf.length !== 11) {
-    return false; // O CPF deve ter exatamente 11 dígitos
+  cpf = cpf.replace(/[^\d]+/g,'');
+  if (cpf.length !== 11) return false;
+
+  // Calcula o primeiro dígito verificador
+  let sum = 0;
+  for (let i = 0; i < 9; i++) {
+    sum += parseInt(cpf.charAt(i)) * (10 - i);
   }
-  if (/^(\d)\1{10}$/.test(cpf)) {
-    return false; // CPF com todos os dígitos iguais são inválidos
+  let rest = sum % 11;
+  let digit = rest < 2 ? 0 : 11 - rest;
+
+  if (parseInt(cpf.charAt(9)) !== digit) return false;
+
+  // Calcula o segundo dígito verificador
+  sum = 0;
+  for (let i = 0; i < 10; i++) {
+    sum += parseInt(cpf.charAt(i)) * (11 - i);
   }
-  // Calcula os dígitos verificadores
-  var v1 = 0, v2 = 0;
-  for (var i = 0, len = cpf.length - 1; i < len; i++) {
-    v1 += cpf.charAt(i) * (len - i);
-    v2 += cpf.charAt(i) * (len - i + 1);
-  }
-  v1 = (v1 % 11 < 2) ? 0 : (11 - v1 % 11);
-  v2 = (v2 + v1 * 2) % 11;
-  v2 = (v2 < 2) ? 0 : (11 - v2);
-  // Verifica se os dígitos verificadores estão corretos
-  if (cpf.charAt(cpf.length - 2) != v1 || cpf.charAt(cpf.length - 1) != v2) {
-    return false;
-  }
+  rest = sum % 11;
+  digit = rest < 2 ? 0 : 11 - rest;
+
+  if (parseInt(cpf.charAt(10)) !== digit) return false;
+
   return true;
 }
+
 
 function validar_email(email) {
   return true;
@@ -130,8 +133,8 @@ function listar_consultas_html(html, consultas, paciente=true){
             <input name="id_consulta" id="id_consulta" value="${id_consulta}" hidden>
             <input name="is_paciente" id="is_paciente" value="${is_paciente}" hidden>
             <a href="javascript:{}" onclick="document.getElementById('form_consulta').submit();">
-              <img src="${dataUri}" width="100" height="100" class="doctor-image" style="width: 150; height: 150;">
-              <p class="big-rectangle-text"> ${nome}</p>
+              <img src="${dataUri}" width="100" height="100" style="width: 100; height: 100;">
+              <p> ${nome}</p>
               <p>${dia_consulta} às ${hora}</p>
             </a>
           </form>
@@ -196,6 +199,39 @@ function listar_horarios_html(html, lista, cpf){
     return html_replace(html, 'data_atendimento', texto);
 }
 
+function listar_historico_html(html, historico){
+    // Adiciona ao html o historico de consultas de determinado paciente
+    texto = ``;
+    for(var i=0; i < historico.length; i++){
+      data = historico[i].data_atendimento;
+      var hora = data.getHours();
+      if(hora < 10){
+        hora = '0' + hora;
+      }
+      var minuto = data.getMinutes();
+      if(minuto < 10){
+        minuto = '0' + minuto;
+      }
+      var dia = data.getDate();
+      var mes = data.getMonth();
+      if(dia < 10){
+        dia = '0' + dia;
+      }
+      if(mes < 10){
+        mes = '0' + (mes+1);
+      }
+      var ano = data.getYear();
+      texto += `
+      <tr>
+        <td>${dia}/${mes}/${ano} ${hora}:${minuto}</td>
+        <td>null</td>
+        <td>${historico[i].anotacoes}</td>
+      </tr>
+      `;
+    }
+    return html_replace(html, 'table_paciente', texto);
+}
+
 module.exports.validar_cpf = validar_cpf;
 module.exports.validar_email = validar_email;
 module.exports.validar_telefone = validar_telefone;
@@ -205,3 +241,4 @@ module.exports.listar_pacientes_html = listar_pacientes_html;
 module.exports.listar_consultas_html = listar_consultas_html;
 module.exports.listar_profissionais_html = listar_profissionais_html;
 module.exports.listar_horarios_html = listar_horarios_html;
+module.exports.listar_historico_html = listar_historico_html;

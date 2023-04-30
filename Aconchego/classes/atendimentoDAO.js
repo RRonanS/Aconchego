@@ -96,27 +96,28 @@ class atendimentoDAO{
     
     async get_atendimentos(cpf_profissional, mostrar_finalizados = false, apenas_finalizados = false) {
           // Retorna todos atendimentos do profissional, com os filtros de que se deve mostrar atendimentos ja finalizados e se apenas eles
-        try {
-          await this.client.connect();
-      
-          let query = `SELECT * FROM atendimento WHERE cpf_profissional = '${cpf_profissional}'`;
-      
-          if (apenas_finalizados) {
-            query += ` AND status = 'finalizado'`;
-          } else if (mostrar_finalizados) {
-            query += ` AND (status = 'finalizado' OR status = 'em_andamento')`;
-          } else {
-            query += ` AND status != 'cancelado'`;
-          }
+        try {      
+          let query = `SELECT * FROM atendimento
+          WHERE profissional_cpf = '${cpf_profissional}'`;
       
           const result = await this.client.query(query);
       
           return result.rows;
         } catch (error) {
           throw error;
-        } finally {
-          await this.client.end();
         }
+      }
+
+      async get_atendimentosPaciente(cpf_profissional, cpf_paciente){
+        // Retorna os atendimentos associados ao profissional e ao paciente ambos
+        var resp = await this.get_atendimentos(cpf_profissional, true, false);
+        var send = [];
+        for(var i=0; i < resp.length; i++){
+          if(resp[i].paciente_cpf == cpf_paciente){
+            send.push(resp[i]);
+          }
+        }
+        return send;
       }
       
       async get_status(id_atendimento){

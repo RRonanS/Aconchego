@@ -10,6 +10,7 @@ const embreve_end = __dirname+'/public/pages/tela_provisoria.html';
 const agendamento_end = __dirname+'/public/pages/agendamento.html';
 const perfil_end = __dirname+'/public/pages/perfil.html';
 const check_consulta = __dirname+'/public/pages/check_consulta.html';
+const his_paciente = __dirname+'/public/pages/historico_paciente.html'
 
 // Modulos proprios
 var usuarioDAO = require('./classes/usuarioDAO');
@@ -47,6 +48,7 @@ var registro_html = set_endereco(registro_end, endereco);
 var agendamento_html = set_endereco(agendamento_end, endereco);
 var perfil_html = set_endereco(perfil_end, endereco);
 var check_consulta_html = set_endereco(check_consulta, endereco);
+var hist_paciente_html = set_endereco(his_paciente, endereco);
 
 // Inicializacao do app
 const oneDay = 1000 * 60 * 60 * 24;
@@ -312,7 +314,12 @@ app.get('/pacientes', async function(req, res){
 
 app.get('/paciente', async function(req, res){
     // Tela para mostrar um determinado paciente do profissional
-    var cpf_paciente = req.body.cpf;
+    var cpf_paciente = req.query.cpf;
+    if(cpf_paciente == undefined || isNaN(cpf_paciente) || cpf_paciente == ''){
+        // Evita consultas invalidas ao banco
+        res.redirect('/pacientes');
+        return
+    }
     var session_id = req.session.sessao;
     if(session_id != undefined){
         var cpf = sh.validarSessao(session_id);
@@ -320,7 +327,19 @@ app.get('/paciente', async function(req, res){
             var perfil = await usuario.get_perfil(cpf);
             if(perfil == 'profissional' || perfil == 'administrador'){
                 // Valido, retorne a tela com os dados do paciente
-                res.send();
+                var resp = hist_paciente_html;
+                resp = html_replace(resp, 'nome', 'Historico do paciente '+await usuario.get_nome(cpf_paciente));
+                var atendimentos = await atendimento.get_atendimentosPaciente(cpf, cpf_paciente);
+                // Itere sobre o html adicionando os dados
+                resp = auxiliares.listar_historico_html(resp, atendimentos);
+                // Esconde as opcoes dado o perfil
+                if(perfil != 'administrador'){
+                    resp = html_replace_att(resp, 'opcao_gerenciamento', 'hidden', true);
+                }
+                if(perfil != 'profissional'){
+                    resp = html_replace_att(resp, 'opcao_pacientes', 'hidden', true);
+                }
+                res.send(resp);
             }
             else{
                 // Perfil invalido
@@ -355,7 +374,7 @@ app.get('/agendamento', async function(req, res){
         else{
             // Logado
             var resp = agendamento_html;
-            if(req.query.cpf != undefined){
+            if(req.query.cpf != undefined && req.query.cpf != '' && !isNaN(req.query.cpf)){
                 // Há um doutor selecionado
                 var datas = await atendimento.datas_diponiveis(req.query.cpf, 7, 6, 18);
                 resp = auxiliares.listar_horarios_html(agendamento_html, datas, req.query.cpf);
@@ -391,7 +410,13 @@ app.get('/agendar', async function(req, res){
             // Logado
             const data = new Date(req.query.data_atendimento);
             const dataFormatada = data.toISOString();
-            const resp = atendimento.criar_atendimento(req.query.cpf, cpf, dataFormatada, 1);
+            try{
+                // Evitar consultas indevidas ao banco
+                const resp = await atendimento.criar_atendimento(req.query.cpf, cpf, dataFormatada, 1);
+            }
+            catch(err){
+                const resp = false;
+            }
             res.redirect('/menu');
         }
     }
@@ -523,9 +548,21 @@ app.post('/redefinirsenha', async function(req, res){
 });
 
 app.get('/check_consulta', async function(req, res){
+    // Tela para verificar uma consulta especifica
     var id = req.session.sessao;
     const id_antedimento = req.query.id_consulta;
-    const is_paciente = req.query.is_paciente.toLowerCase() === "true";
+    var is_paciente = undefined;
+    try{
+        is_paciente = req.query.is_paciente.toLowerCase() === "true";
+    }
+    catch(err){
+        is_paciente = undefined;
+    }
+    if(id_antedimento == undefined || is_paciente == undefined || isNaN(id_antedimento) || id_antedimento == ''){
+        // Verifica se a consulta ao banco não fere restricoes
+        res.redirect('/menu');
+        return
+    }
     // Verifica se o usuario já está autenticado
     if(id == undefined){
         res.redirect('/login');
@@ -542,54 +579,59 @@ app.get('/check_consulta', async function(req, res){
                 // Repoe os campos do html e o envia para o cliente
                 var resp = check_consulta_html;
                 var consulta = await atendimento.get_consulta(id_antedimento);
-                if(is_paciente){
-                    var nome = await usuario.get_nome(consulta.profissional_cpf);
-                    var foto = await usuario.get_imagem(consulta.profissional_cpf);
-                    resp = html_replace(resp, 'nome', `Consulta com doutor ${nome}`);
+                if(consulta != undefined){
+                    if(is_paciente){
+                        var nome = await usuario.get_nome(consulta.profissional_cpf);
+                        var foto = await usuario.get_imagem(consulta.profissional_cpf);
+                        resp = html_replace(resp, 'nome', `Consulta com doutor ${nome}`);
+                    }
+                    else{
+                        var nome = await usuario.get_nome(consulta.paciente_cpf);
+                        var foto = await usuario.get_imagem(consulta.paciente_cpf);
+                        resp = html_replace(resp, 'nome', `Consulta com paciente ${nome}`);
+                    }
+                    var buffer = foto;
+                    var dataUri = undefined;
+                    if(buffer != undefined){
+                      const base64 = buffer.toString('base64');
+                      dataUri = `data:image/jpeg;base64,${base64}`; 
+                    }
+                    resp = html_replace(resp, 'foto', `<img src='${dataUri}' alt='Imagem da consulta' style="width: 100px; height: 100px;">`);
+                    var hora = consulta.data_atendimento.getHours();
+                    if(hora < 10){
+                      hora = '0' + hora;
+                    }
+                    var minuto = consulta.data_atendimento.getMinutes();
+                    if(minuto < 10){
+                      minuto = '0' + minuto;
+                    }
+                    var dia = consulta.data_atendimento.getDate();
+                    var mes = consulta.data_atendimento.getMonth();
+                    if(dia < 10){
+                      dia = '0' + dia;
+                    }
+                    if(mes < 10){
+                      mes = '0' + (mes+1);
+                    }
+                    var dia_consulta =`${dia}/${mes}`;
+                    const atual = new Date();
+                    if(consulta.data_atendimento.getDate() == atual.getDate() && consulta.data_atendimento.getMonth() == atual.getMonth()){
+                      dia_consulta = 'Hoje';
+                    }
+                    resp = html_replace(resp, 'data', `${dia_consulta} as ${hora} horas`); 
+                    // Esconde as opcoes dado o perfil
+                    const perfil = await usuario.get_perfil(cpf);
+                    if(perfil != 'administrador'){
+                        resp = html_replace_att(resp, 'opcao_gerenciamento', 'hidden', true);
+                    }
+                    if(perfil != 'profissional'){
+                        resp = html_replace_att(resp, 'opcao_pacientes', 'hidden', true);
+                    }
+                    res.send(resp);
                 }
                 else{
-                    var nome = await usuario.get_nome(consulta.paciente_cpf);
-                    var foto = await usuario.get_imagem(consulta.paciente_cpf);
-                    resp = html_replace(resp, 'nome', `Consulta com paciente ${nome}`);
+                    res.redirect('/menu');
                 }
-                var buffer = foto;
-                var dataUri = undefined;
-                if(buffer != undefined){
-                  const base64 = buffer.toString('base64');
-                  dataUri = `data:image/jpeg;base64,${base64}`; 
-                }
-                resp = html_replace(resp, 'foto', `<img src='${dataUri}' alt='Imagem da consulta' style="width: 100px; height: 100px;">`);
-                var hora = consulta.data_atendimento.getHours();
-                if(hora < 10){
-                  hora = '0' + hora;
-                }
-                var minuto = consulta.data_atendimento.getMinutes();
-                if(minuto < 10){
-                  minuto = '0' + minuto;
-                }
-                var dia = consulta.data_atendimento.getDate();
-                var mes = consulta.data_atendimento.getMonth();
-                if(dia < 10){
-                  dia = '0' + dia;
-                }
-                if(mes < 10){
-                  mes = '0' + (mes+1);
-                }
-                var dia_consulta =`${dia}/${mes}`;
-                const atual = new Date();
-                if(consulta.data_atendimento.getDate() == atual.getDate() && consulta.data_atendimento.getMonth() == atual.getMonth()){
-                  dia_consulta = 'Hoje';
-                }
-                resp = html_replace(resp, 'data', `${dia_consulta} as ${hora} horas`); 
-                // Esconde as opcoes dado o perfil
-                const perfil = await usuario.get_perfil(cpf);
-                if(perfil != 'administrador'){
-                    resp = html_replace_att(resp, 'opcao_gerenciamento', 'hidden', true);
-                }
-                if(perfil != 'profissional'){
-                    resp = html_replace_att(resp, 'opcao_pacientes', 'hidden', true);
-                }
-                res.send(resp);
             }
             else{
                 res.redirect('/menu');
@@ -597,7 +639,6 @@ app.get('/check_consulta', async function(req, res){
         }
     }
 })
-
 
 // Release 1:
 //  Realizar sistema de cadastro e de login,
@@ -615,4 +656,19 @@ app.get('/psicologos', function(req, res){
 });
 app.get('/meditacao', function(req, res){
     res.sendFile(embreve_end);
+});
+app.get('/entrar_consulta', function(req, res){
+    // redireciona para a página anterior
+    const referer = req.get('referer');
+    res.redirect(referer);
+});
+app.get('/remarcar_consulta', function(req, res){
+    // redireciona para a página anterior
+    const referer = req.get('referer');
+    res.redirect(referer);
+});
+app.get('/apagar_conta', function(req, res){
+    // redireciona para a página anterior
+    const referer = req.get('referer');
+    res.redirect(referer);
 });

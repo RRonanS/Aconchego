@@ -61,23 +61,21 @@
         <main class="main-content">
             <div class="big-rectangle">
                 <h2 id="h_consultas">Consulta marcada</h2>
-                <div id="div_consultas" style="display: flex; gap: 5px;" >
-                    <div class="content-box">
-                        <a href="#">
-                            <img src="perfil_resized.png">
+                <div id="div_consultas" style="display: flex;" >
+                    <div class="content-box" style="justify-content: center; display: flex; align-items: center; flex-direction: column;
+                    gap: 2px;">
+                            <div id="foto">Foto</div>
                             <h3 id="nome">Consulta com Doutor Fulano </h3>
                             <h4 id="data">Data da consulta</h4>
                             <form action="http://localhost:8080/entrar_consulta" method="get">
                                 <input type="text" id="entradr_id" name="entrar_id" hidden>
                                 <button> Entrar na consulta</button>
                             </form>
-                            <br>
                             
-                            <form action="">
+                            <form action="http://localhost:8080/remarcar_consulta" method="get">
                                 <input type="text" id="remarcar_id" name="remarcar_id" hidden>
                                 <button>Remarcar/Cancelar consulta</button>
                             </form>
-                        </a>
                     </div>
                 </div>
                         
