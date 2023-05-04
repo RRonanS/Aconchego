@@ -7,13 +7,13 @@ Solução web para auxílio a pessoas com transtornos mentais
 # Equipe
 Front-End:
 
-  Diego Gomes
+  - Diego Gomes
   
-  Jorge Lucas
+  - Jorge Lucas
 
 Back-End:
   
-  Pedro Leão
+  - Pedro Leão
   
-  Pedro Henrique
+  - Pedro Henrique
   
